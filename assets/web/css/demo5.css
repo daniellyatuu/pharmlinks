@@ -1,0 +1,16 @@
+/*home-water-pipe*/
+..banner-area.banner-1{
+	overflow: hidden;
+}
+ #wavybg-wrapper {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 9;
+    opacity: 0.3;
+}
+.slider-title{
+	z-index: 10;
+}

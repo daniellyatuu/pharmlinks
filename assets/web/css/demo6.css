@@ -1,0 +1,21 @@
+/*home-water-pipe*/
+ .mbYTP_wrapper {
+    height: 100%;
+    left: 0;
+    position: absolute !important;
+    top: 0;
+    width: 100%;
+    z-index: 9 !important;
+   
+}
+.header .header-overlay{
+	background:#2d2121 url(../images/video_bg.jpg) 0 0 no-repeat;
+	background-blend-mode: overlay;
+}
+.position_block{
+	position:static !important;
+}
+
+.YTPOverlay.raster{
+	    background-color: rgba(0, 0, 0, 0.69);
+}
