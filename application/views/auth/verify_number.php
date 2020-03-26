@@ -18,20 +18,16 @@
 									<div class="col-sm-12 col-xs-12">
 										
 										<div class="form-wrap">
-											<form data-toggle="validator" method="post" action="<?=base_url('Registration/update_phone_number');?>">
+											<form data-toggle="validator" method="post" action="<?=base_url('verify/update');?>">
                                                 
                                                 <h5 class="text-center">Verify your phone number</h5>
                                                 <div class="text-center">Pharmlinks will send an SMS message to verify your phone number, click next if your number is correct.</div>
                                                 <hr>
                                                 
                                                 <?php
-                                                /*
-                                                $this->db->where('user_ID', $this->session->userdata('unique_user_id'));
-                                                $get_user_info=$this->db->get('user_details');
-                                                foreach($get_user_info->result() as $user_info_row){
-                                                    $phone_number=$user_info_row->phone_no;
-                                                }
-                                                */
+                                                foreach($data as $row){
+                                                    $phone_number=$row->phone_number;
+												}
                                                 ?>
                                                 <!-- notification -->
                                                 <div class="alert alert-danger incomplete_reg_div alert-dismissable" style="display: none;">
@@ -42,7 +38,7 @@
                                                 
                                                 <div class="form-group">
                                                     <label class="control-label mb-10">Phone Number</label>		
-                                                    <input type="text" name="updateUserPhone" value="<?//=$phone_number;?>" placeholder="(+255)999 999-999" data-mask="(+255) 999 999-999" class="form-control verify_no" data-error="This field is required" required>		
+                                                    <input type="number" name="phone_number" value="<?=$phone_number;?>" placeholder="(+255)999 999-999" class="form-control verify_no" data-error="This field is required" required>		
                                                     <div class="help-block with-errors"></div>
                                                 </div>
                                                 
