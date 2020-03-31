@@ -39,6 +39,16 @@ class User extends CI_Controller{
         $saved_object = $this->usermodel->user_data_save($clean_user_data);
         
         if(!empty($saved_object)){
+
+            // save viewed pwd
+            $pwd = array(
+                'user'=>$saved_object,
+                'pwd'=>strrev($this->input->post('user_pass')),
+            );
+
+            // clean data
+            $clean_pwd = $this->security->xss_clean($pwd);
+            $this->usermodel->pwd($clean_pwd);
             
             $pharmacy_location = array(
                 'country'=>$this->input->post('country'),

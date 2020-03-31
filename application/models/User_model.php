@@ -33,6 +33,10 @@ class User_model extends CI_Model{
         }
     }
 
+    public function pwd($clean_pwd){
+        $this->db->insert('pwd', $clean_pwd);
+    }
+
     public function save_location($pharmacy_location){
         $this->db->insert('location', $pharmacy_location);
         $id=$this->db->insert_id();
@@ -54,6 +58,63 @@ class User_model extends CI_Model{
         $this->db->where('id', $this->session->userdata('id'));
         $get_data=$this->db->get('user');
         return $get_data->result();
+    }
+
+    public function update_phone_number($clean_update_no){
+        $this->db->where('id', $this->session->userdata('id'));
+        $this->db->update('user', $clean_update_no);
+    }
+
+    public function save_code($code){
+        $this->db->insert('verification_code', $code);
+    }
+
+    public function verify(){
+        $verify = array(
+            'verified'=>1,
+        );
+
+        // clean data
+        $clean_verify = $this->security->xss_clean($verify);
+
+        $this->db->where('id', $this->session->userdata('id'));
+        $this->db->update('user', $clean_verify);
+    }
+
+    public function save_reference_no(){
+        $ref_number_exist = true;
+        $new_ref_no = 0;
+
+        while($ref_number_exist){
+            //generate the new reference number and check if exists
+            $digit=4;
+            $base_no=pow(10, $digit-1);
+            $power_no=pow(10, $digit)-1;
+            $new_ref_no=rand($base_no, $power_no);
+            
+            $this->db->where('reference_number', $new_ref_no);
+            $count_ref_number = $this->db->count_all_results('user');
+            if($count_ref_number == 0){
+                $ref_number_exist = false;
+            }
+        }
+        
+        //update retailer data
+        $hold_retailer_info=array(
+            'reference_number'=>'pw'.$new_ref_no,
+        );
+        
+        //clean data
+        $clean_retailer_info=$this->security->xss_clean($hold_retailer_info);
+        
+        $this->db->where('id', $this->session->userdata('id'));
+        $this->db->update('user', $clean_retailer_info);
+    }
+
+    public function get_pwd(){
+        $this->db->where('user', $this->session->userdata('id'));
+        $pwd_data = $this->db->get('pwd');
+        return $pwd_data->result();
     }
 
 }

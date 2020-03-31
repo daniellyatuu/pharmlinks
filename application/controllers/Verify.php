@@ -24,116 +24,170 @@ class Verify extends CI_Controller{
 
     public function update(){
         
-        $new_phone_no=$this->input->post('phone_number');
-        echo $new_phone_no;
-        exit();
+        $new_phone_no=str_replace(str_split('-+() '),'', $this->input->post('phone_number'));
         
-        // ###########################################
-        // //check if user data already exist in the verification_code table and delete them before continue
+        //update phone number
+        $update_no=array(
+            'phone_number'=>$new_phone_no
+        );
+
+        // clean data
+        $clean_update_no = $this->security->xss_clean($update_no);
+        $this->usermodel->update_phone_number($clean_update_no);
         
-        // $this->db->where('user_id', $this->session->userdata('unique_user_id'));
-        // $select_code=$this->db->get('verification_code');
+        //prepare number inorder to send sms
+        $user_phone_no=str_replace(str_split('-+() '),'',$new_phone_no);
         
-        // $count_code_selected=$select_code->num_rows();
-        // if($count_code_selected==1){
-        //     $this->db->where('user_id', $this->session->userdata('unique_user_id'));
-        //     $this->db->delete('verification_code');
-        // }
-        // ###########################################
+        //substring all numbers
+        $last_nine_no=substr($user_phone_no, -9);
+        $userPhoneno='255'.$last_nine_no;
         
-        // //prepare number inorder to send sms
-        // $user_phoneNo=str_replace(str_split('-+() '),'',$get_updated_phone_no);
-        
-        // //substring all numbers
-        // $last_nine_no=substr($user_phoneNo, -9);
-        // $userPhoneno='255'.$last_nine_no;
-        
-        // //hold update number data
-        // $hold_update_phone_no=array(
-        //     'phone_no'=>$get_updated_phone_no
-        // );
-        
-        // //clean data
-        // $clean_phone_no_data=$this->security->xss_clean($hold_update_phone_no);
-        // $this->access_database->update_phone_number($clean_phone_no_data);
-        
-        // //generate unique verification code
-        // ##################################
-        // ##################################
-        
-        // $digit=4;
-        // $base_no=pow(10, $digit-1);
-        // $power_no=pow(10, $digit)-1;
-        // $verification_code=rand($base_no, $power_no);
-        
-        // //insert verification code
-        // $this->db->from('verification_code');
-        // $this->db->where('user_id', $this->session->userdata('unique_user_id'));
-        // $this->db->where('phone_number', $get_updated_phone_no);
-        // $this->db->limit(1);
-        // $code_number=$this->db->get();
-        
-        // //check if user already insert this number
-        // if($code_number->num_rows() == 0){
-        //     //insert this code to verification table
-        //     $hold_code=array(
-        //         'user_id'=>$this->session->userdata('unique_user_id'),
-        //         'code'=>$verification_code,
-        //         'phone_number'=>$get_updated_phone_no
-        //     );
-        //     //clean data
-        //     $clean_hold_code=$this->security->xss_clean($hold_code);
-        //     $this->db->insert('verification_code', $clean_hold_code);
+        //generate unique verification code
+        $code_exist = true;
+        $verification_code = 0;
+
+        while($code_exist){
+            //generate the new code and check if exists
+            $digit=4;
+            $base_no=pow(10, $digit-1);
+            $power_no=pow(10, $digit)-1;
+            $verification_code=rand($base_no, $power_no);
             
-        //     //get code from db and send to user who register
-        //     $this->db->where('user_id', $this->session->userdata('unique_user_id'));
-        //     $get_code_number=$this->db->get('verification_code');
-        //     foreach($get_code_number->result() as $code_number_row){
-        //         $real_code_no=$code_number_row->code;
-        //     }
-        //     //generate verification sms
-        //     $verification_sms="Your Pharmlinks code: ".$real_code_no.", Don't share this code with others.";
+            $this->db->where('user', $this->session->userdata('id'));
+            $this->db->where('code', $verification_code);
+            $code_no = $this->db->count_all_results('verification_code');
             
-        //     ###	NEW API TO SEND SMS
-        //     $arrContextOptions=array(
-        //         "ssl"=>array(
-        //             "verify_peer"=>false,
-        //             "verify_peer_name"=>false,
-        //         ),
-        //     );
-            
-        //     //send sms to getway 
-        //     $to = $userPhoneno;
-        //     $sms = urlencode($verification_sms);
-        //     $header='PHARMLINKS';
-            
-        //     $verification_code_sent = file_get_contents("https://www.sms.co.tz/api.php?do=sms&username=afeltechnologies&password=AFELSMS123&senderid=$header&dest=$to&msg=$sms", false, stream_context_create($arrContextOptions));
-        //     //if msg sent to getway...insert data.
-            
-        //     if($verification_code_sent){
-        //         //save sent sms to db
-        //         $hold_sent_sms=array(
-        //             'user_id'=>$this->session->userdata('unique_user_id'),
-        //             'sms'=>$verification_sms,
-        //             'sms_number'=>ceil(strlen($verification_sms)/160)
-        //         );
-        //         //clean data
-        //         $clean_sent_sms=$this->security->xss_clean($hold_sent_sms);
-        //         $this->db->insert('verification_sms', $clean_sent_sms);
-        //     }
-        // }
+            if($code_no == 0){
+                $code_exist = false;
+            }
+        }
+
+        //save verification code
+        $code = array(
+            'user'=>$this->session->userdata('id'),
+            'code'=>$verification_code,
+        );
+        $this->usermodel->save_code($code);
         
-        // ##################################
-        // ##################################
-        
-        // redirect('Registration/code_number');
+        //generate verification sms
+        $verification_sms="Your Pharmlinks code: ".$verification_code.", Don't share this code with others.";
+        // echo $verification_sms;
+
+        ########################################
+        # start send sms from here #############
+        ########################################
+        redirect('verify/code');
     }
 
     public function code(){
         $context['title']='pharmlinks | verify';
+        $context['data']=$this->usermodel->verify_number();
         $this->load->view('includes/header/auth_header', $context);
         $this->load->view('auth/code');
         $this->load->view('includes/footer/auth_footer');
+    }
+
+    public function finalize(){
+        $code=str_replace('-','',$this->input->post('verify_code'));
+        
+        $this->db->from('verification_code');
+        $this->db->where('user', $this->session->userdata('id'));
+        $this->db->where('code', $code);
+        $this->db->limit(1);
+        $code_info=$this->db->get();
+
+        // count code info
+        $count_code = $code_info->num_rows();
+        
+        if($count_code > 0){
+            
+            // check user group
+            $this->db->where('id', $this->session->userdata('group'));
+            $category_data = $this->db->get('group');
+
+            $category = '';
+            foreach($category_data->result() as $category_row){
+                $category = $category_row->name;
+            }
+
+            // change verification status
+            $this->usermodel->verify();
+
+            if($category == 'ADDO' or $category == 'retailer'){
+                $this->usermodel->save_reference_no();
+            }
+            
+            $user_data = $this->usermodel->verify_number();
+            
+
+            // insert more user data
+            foreach($user_data as $user_row){
+
+                $userdata=array(
+                    'id' => $user_row->id,
+                    'first_name' => $user_row->first_name,
+                    'last_name' => $user_row->last_name,
+                    'email' => $user_row->email,
+                    'username' => $user_row->username,
+                    'phone_number' => $user_row->phone_number,
+                    'reference_number' => $user_row->reference_number,
+                    'group' => $category,
+                    'gender' => $user_row->gender,
+                    'active' => $user_row->active,
+                    'verified' => $user_row->verified,
+                );
+
+            }
+
+            $this->session->set_userdata($userdata);
+
+            // send email to user .start
+            // $email_to=$this->session->userdata('email');
+            // $member_username=$this->session->userdata('username');
+            
+            // // user pwd
+            // $pwd = $this->usermodel->get_pwd();
+            // foreach($pwd as $row){
+            //     $pwd_data = strrev($row->pwd);
+            // }
+            
+            // $message_content='Dear <strong>customer,</strong><br/>
+            // Thank you for Signing Up and Registering with <strong>PharmLinks!</strong>.<br/>
+            // Use the following credentials to login to your Pharmlinks Account:-<br/>
+            // <p style="margin-left:10px; margin:0; padding: 0;">
+            // Username: <span style="text-decoration: underline; font-weight: bold;">'.$member_username.'</span><br/>
+            // Password:<span style="text-decoration: underline; font-weight: bold;">'.$pwd_data.'</span></p><br>
+            // If you have trouble please contact us via 0753 841 279<br/>
+            // <p style="font-family: Trebuchet MS;">we get straight to work so you can get straight to business. Enjoy our services.</p>';
+            
+            // $this->load->library('email');
+            
+            // $config=array(
+            //     'charset'=>'utf-8',
+            //     'wordwrap'=> TRUE,
+            //     'mailtype' => 'html'
+            // );
+            // $this->email->initialize($config);
+            
+            // $this->email->from('daniellyatuu@gmail.com', 'PharmLinks');
+            // $this->email->to($email_to);
+            // //$this->email->cc('another@another-example.com');
+            // //$this->email->bcc('them@their-example.com');
+            
+            // $this->email->subject('PHARMLINKS REGISTRATION');
+            // $this->email->message($message_content);
+            
+            // $this->email->send();
+            // send email to user ./end
+
+            redirect('verify/thanks');
+            
+        }else{
+            // invalid code flash message
+            $this->session->set_flashdata('error','Wrong verification code.');
+            redirect('verify/code');
+        }
+        
     }
 
     public function thanks(){
