@@ -5,9 +5,17 @@ class R_main extends CI_Controller{
     
     function __construct(){
         parent::__construct();
+
+        if(!$this->session->userdata('logged_in')){
+            redirect('user');
+        }
+
+        if($this->session->userdata('group')!='retailer' and $this->session->userdata('group')!='ADDO'){
+            redirect('user');
+        }
     }
     
-    public function dashboard(){
+    public function index(){
         //auto cancel order
         // $this->billing->auto_cancel_order();
         

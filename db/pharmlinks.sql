@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.2
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 26, 2020 at 01:23 PM
+-- Generation Time: Mar 31, 2020 at 02:51 PM
 -- Server version: 10.4.11-MariaDB
--- PHP Version: 7.2.26
+-- PHP Version: 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -69,7 +69,13 @@ INSERT INTO `location` (`id`, `country`, `location_name`, `lattitude`, `longitud
 (6, 'Tanzania', 'Changuu, Tanzania', '-6.119531800000001', '39.166397'),
 (7, 'Tanzania', 'Dodoma, Tanzania', '-6.162959000000001', '35.75160689999999'),
 (8, 'Tanzania', '1001 Organic Spicery, Tharia Street, Zanzibar City, Tanzania', '-6.1611742', '39.1919875'),
-(9, 'Tanzania', 'Dar es Salaam, Tanzania', '-6.792354', '39.2083284');
+(9, 'Tanzania', 'Dar es Salaam, Tanzania', '-6.792354', '39.2083284'),
+(10, 'Tanzania', 'Afya Bora Pharma Ltd, Dar es Salaam, Tanzania', '-6.819094199999999', '39.27463650000001'),
+(11, 'Tanzania', 'Afya Bora Pharma Ltd, Dar es Salaam, Tanzania', '-6.819094199999999', '39.27463650000001'),
+(12, 'Tanzania', 'Afya Bora Pharma Ltd, Dar es Salaam, Tanzania', '-6.819094199999999', '39.27463650000001'),
+(13, 'Tanzania', 'Afya Bora Pharma Ltd, Dar es Salaam, Tanzania', '-6.819094199999999', '39.27463650000001'),
+(14, 'Tanzania', 'Afya Bora Pharma Ltd, Dar es Salaam, Tanzania', '-6.819094199999999', '39.27463650000001'),
+(15, 'Tanzania', 'Nkuhungu Chama Bus Stand, Dodoma, Tanzania', '-6.1436163', '35.725742');
 
 -- --------------------------------------------------------
 
@@ -91,9 +97,28 @@ CREATE TABLE `pharmacy` (
 --
 
 INSERT INTO `pharmacy` (`id`, `name`, `user`, `location`, `FIN`, `date_registered`) VALUES
-(1, 'daniel pharmacy', 9, 2, '1212', '2020-03-26 10:49:08'),
-(3, 'daniel p', 11, 4, 'dsdsd', '2020-03-26 11:20:04'),
-(8, 'projesta pharmacy', 16, 9, 'fin number', '2020-03-26 11:37:36');
+(13, 'pharmacy name', 22, 14, 'fin number', '2020-03-31 11:58:30'),
+(14, 'sine pharmacy', 23, 15, 'finnumber', '2020-03-31 12:17:15');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pwd`
+--
+
+CREATE TABLE `pwd` (
+  `id` int(11) NOT NULL,
+  `user` int(11) NOT NULL,
+  `pwd` varchar(128) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `pwd`
+--
+
+INSERT INTO `pwd` (`id`, `user`, `pwd`) VALUES
+(5, 22, '654321'),
+(6, 23, '654321');
 
 -- --------------------------------------------------------
 
@@ -108,7 +133,7 @@ CREATE TABLE `user` (
   `last_name` varchar(255) DEFAULT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(128) NOT NULL,
-  `phone_number` int(50) NOT NULL,
+  `phone_number` varchar(50) NOT NULL,
   `reference_number` varchar(11) DEFAULT NULL,
   `group` int(11) NOT NULL,
   `gender` varchar(11) DEFAULT NULL,
@@ -124,11 +149,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `first_name`, `email`, `last_name`, `username`, `password`, `phone_number`, `reference_number`, `group`, `gender`, `date_registered`, `update_at`, `last_login`, `active`, `verified`) VALUES
-(8, NULL, 'daniellyatuu@gmail.com', NULL, 'daniellyatuu@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 255653900, NULL, 3, NULL, '2020-03-26 10:01:20', '2020-03-26 10:01:20', NULL, 1, 0),
-(9, NULL, 'dan@gmail.com', NULL, 'dan@gmail.com', '25d55ad283aa400af464c76d713c07ad', 255121212, NULL, 3, NULL, '2020-03-26 10:49:08', '2020-03-26 10:49:08', NULL, 1, 0),
-(10, NULL, 'sine@gmail.com', NULL, 'sine@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 255112121, NULL, 2, NULL, '2020-03-26 10:54:36', '2020-03-26 10:54:36', NULL, 1, 0),
-(11, NULL, 'daniellyatuu1@gmail.com', NULL, 'daniellyatuu1@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 255121212, NULL, 4, NULL, '2020-03-26 11:20:04', '2020-03-26 11:20:04', NULL, 1, 0),
-(16, NULL, 'projesta@gmail.com', NULL, 'projesta@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 255121212, NULL, 4, NULL, '2020-03-26 11:37:36', '2020-03-26 11:37:36', NULL, 1, 0);
+(22, NULL, 'daniellyatuu@gmail.com', NULL, 'daniellyatuu@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '065390085', 'pw2236', 2, NULL, '2020-03-31 11:58:30', '2020-03-31 11:59:00', NULL, 1, 1),
+(23, NULL, 'sine@gmail.com', NULL, 'sine@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '0715347677', 'pw1214', 3, NULL, '2020-03-31 12:17:15', '2020-03-31 12:19:00', NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -142,6 +164,14 @@ CREATE TABLE `verification_code` (
   `code` int(11) NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `verification_code`
+--
+
+INSERT INTO `verification_code` (`id`, `user`, `code`, `date_created`) VALUES
+(2, 22, 7781, '2020-03-31 11:58:47'),
+(3, 23, 9040, '2020-03-31 12:17:19');
 
 --
 -- Indexes for dumped tables
@@ -166,6 +196,13 @@ ALTER TABLE `pharmacy`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FK_pharmacy_user` (`user`),
   ADD KEY `FK_pharmacy_location` (`location`);
+
+--
+-- Indexes for table `pwd`
+--
+ALTER TABLE `pwd`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_pwd_user` (`user`);
 
 --
 -- Indexes for table `user`
@@ -195,25 +232,31 @@ ALTER TABLE `group`
 -- AUTO_INCREMENT for table `location`
 --
 ALTER TABLE `location`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `pharmacy`
 --
 ALTER TABLE `pharmacy`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `pwd`
+--
+ALTER TABLE `pwd`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `verification_code`
 --
 ALTER TABLE `verification_code`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -225,6 +268,12 @@ ALTER TABLE `verification_code`
 ALTER TABLE `pharmacy`
   ADD CONSTRAINT `FK_pharmacy_location` FOREIGN KEY (`location`) REFERENCES `location` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_pharmacy_user` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `pwd`
+--
+ALTER TABLE `pwd`
+  ADD CONSTRAINT `FK_pwd_user` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user`

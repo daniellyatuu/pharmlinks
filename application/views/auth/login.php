@@ -41,17 +41,21 @@
 											<div class="clearfix"></div>
 										</div>
                                         
-                                        <div class="alert alert-danger show_div3 alert-dismissable" style="display: none;">
+										<?php
+										if($this->session->flashdata()){
+										?>
+                                        <div class="alert <?php if($this->session->flashdata('wrong_account')){ ?>alert-danger<?php }else if($this->session->flashdata('logout')){ ?>alert-success<?php } ?> show_div3 alert-dismissable">
 											<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                            <i class="fa fa-warning pr-15 pull-left"></i><p class="pull-left">wrong password or username, <strong>try again!</strong>.</p> 
+                                            <i class="fa fa-warning pr-15 pull-left"></i><p class="pull-left"><?php if($this->session->flashdata('wrong_account')){echo $this->session->flashdata('wrong_account'); }else if($this->session->flashdata('logout')){echo $this->session->flashdata('logout');}?></p> 
 											<div class="clearfix"></div>
 										</div>
+										<?php } ?>
                                         
 										<div class="form-wrap">
-											<form method="post" action="<?=base_url('registration/user_login');?>" data-toggle="validator">
+											<form method="post" action="<?=base_url('user/login');?>" data-toggle="validator">
 												<div class="form-group">
 													<label class="control-label mb-10" for="exampleInputEmail_2">Username</label>
-													<input type="text" name="user_name" value="<?=set_value('user_name');?>" class="form-control" id="exampleInputEmail_2" placeholder="Enter username" required>
+													<input type="text" name="usermail" value="<?=set_value('usermail');?>" class="form-control" id="exampleInputEmail_2" placeholder="Enter username" required>
 												</div>
 												<div class="form-group">
 													<label class="pull-left control-label mb-10" for="exampleInputpwd_2">Password</label>

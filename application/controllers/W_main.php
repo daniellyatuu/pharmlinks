@@ -7,7 +7,7 @@ class W_main extends CI_Controller{
         parent::__construct();
     }
     
-    public function dashboard(){
+    public function index(){
         //auto cancel order
         // $this->billing->auto_cancel_order();
         

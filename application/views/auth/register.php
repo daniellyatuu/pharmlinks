@@ -49,7 +49,7 @@
                                                 
                                                 <div class="form-group">		
                                                     <label class="control-label mb-10">Phone Number</label>		
-                                                    <input type="text" name="user_phone" value="<?=set_value('user_phone');?>" placeholder="(+255)999 999-999" data-mask="(+255) 999 999-999" class="form-control" data-error="This field is required" required>		
+                                                    <input type="number" name="user_phone" value="<?=set_value('user_phone');?>" placeholder="enter phone number" class="form-control" data-error="This field is required" required>		
                                                     <div class="help-block with-errors"></div>
                                                 </div>
 

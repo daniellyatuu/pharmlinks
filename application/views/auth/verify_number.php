@@ -26,19 +26,23 @@
                                                 
                                                 <?php
                                                 foreach($data as $row){
-                                                    $phone_number=$row->phone_number;
+													$phone_number=$row->phone_number;
 												}
                                                 ?>
-                                                <!-- notification -->
-                                                <div class="alert alert-danger incomplete_reg_div alert-dismissable" style="display: none;">
+
+												<?php
+												if($this->session->flashdata('verify')){
+												?>
+												<div class="alert alert-danger incomplete_reg_div alert-dismissable">
                                                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                                    <i class="fa fa-warning pr-15 pull-left"></i><p class="pull-left">Please complete your registration.</p>
+                                                    <i class="fa fa-warning pr-15 pull-left"></i><p class="pull-left"><?=$this->session->flashdata('verify');?></p>
                                                     <div class="clearfix"></div>
                                                 </div>
+												<?php } ?>
                                                 
                                                 <div class="form-group">
                                                     <label class="control-label mb-10">Phone Number</label>		
-                                                    <input type="number" name="phone_number" value="<?=$phone_number;?>" placeholder="(+255)999 999-999" class="form-control verify_no" data-error="This field is required" required>		
+                                                    <input type="number" name="phone_number" value="<?=$phone_number;?>" placeholder="enter phone number" class="form-control verify_no" data-error="This field is required" required>		
                                                     <div class="help-block with-errors"></div>
                                                 </div>
                                                 

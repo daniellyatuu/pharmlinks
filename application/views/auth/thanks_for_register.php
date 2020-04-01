@@ -22,24 +22,19 @@
                                                 <div class="text-center"><strong>Please check your email <a href="https://accounts.google.com/signin/v2/identifier?hl=en-GB&continue=https%3A%2F%2Fmail.google.com%2Fmail&service=mail&flowName=GlifWebSignIn&flowEntry=AddSession" target="_blank"><?=$this->session->userdata('email');?></a></strong> to view your login crecidentials.</div>
                                                 <hr>
                                                 <div class="row">
-                                                    <div class="col-md-6 text-center">
-                                                        <div class="form-group">
-                                                            <a href="<?=base_url('Main/pharmacy');?>" class="btn btn-default btn-xs">Continue to register pharmacy</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 text-center">
+                                                    <div class="col-md-12 text-center">
                                                         <div class="form-group">
                                                             <?php
                                                             if($this->session->userdata('group')=='wholesaler'){
                                                             ?>
                                                             
-                                                            <a href="<?=base_url('WL_main/index');?>" class="btn btn-default btn-xs">Continue to homepage</a>
+                                                            <a href="<?=base_url('w_main');?>" class="btn btn-default btn-xs">Continue to homepage</a>
                                                             
                                                             <?php
                                                             }else if($this->session->userdata('group')=='retailer' or $this->session->userdata('group')=='ADDO'){
                                                             ?>
                                                             
-                                                            <a href="<?=base_url('RT_main/index');?>" class="btn btn-default btn-xs">Continue to homepage</a>
+                                                            <a href="<?=base_url('r_main');?>" class="btn btn-default btn-xs">Continue to homepage</a>
                                                             
                                                             <?php
                                                             }
