@@ -82,7 +82,7 @@ class User extends CI_Controller{
                 }else if($this->session->userdata('group')=='wholesaler'){
                     redirect('w_main');
                 }else if($this->session->userdata('group')=='admin'){
-                    echo 'admin';
+                    redirect('a_main');
                 }
                 
             }else{

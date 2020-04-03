@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>
+	<title>pharmlinks |
         <?php
         if(!empty($title)){
             echo $title;
