@@ -98,7 +98,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label mb-10">Pharmacy Location</label>
                                                             <input type="text" id="pac-input" name="bussiness_loc" value="<?=set_value('bussiness_loc');?>" class="form-control searchBussinessLocation" placeholder="search your bussiness location here" data-error="Please fill out this field" required>
-                                                            <div class="help-block with-errors error_div"></div> 
+                                                            <div class="help-block with-errors loc_div_error text-danger"></div> 
                                                         </div>
                                                     </div>
                                                     
@@ -107,16 +107,16 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <p class="coupon-input form-row-last">
-                                                            <input type="text" placeholder="location name" name="location_name" class="location_name" value="<?=set_value('location_name');?>">
-                                                            <input type="text" placeholder="location name" class="dir" name="dir" value="<?=set_value('dir');?>">
-                                                            <input type="text" placeholder="latitude" name="lati" class="lati" value="<?=set_value('lati');?>">
-                                                            <input type="text" placeholder="longitude" name="longi" class="longi" value="<?=set_value('longi');?>">
+                                                            <input type="hidden" placeholder="location name" name="location_name" class="location_name" value="<?=set_value('location_name');?>">
+                                                            <input type="hidden" placeholder="location name" class="dir" name="dir" value="<?=set_value('dir');?>">
+                                                            <input type="hidden" placeholder="latitude" name="lati" class="lati" value="<?=set_value('lati');?>">
+                                                            <input type="hidden" placeholder="longitude" name="longi" class="longi" value="<?=set_value('longi');?>">
                                                         </p>
                                                         
                                                         <div class="row locationInfoShow">
                                                             <div class="col-md-12 locationName"><?=set_value('location_name');?></div>
-                                                            <div class="col-md-12 lattitude_no"><?=set_value('lati');?></div>
-                                                            <div class="col-md-12 longitude_no"><?=set_value('longi');?></div>
+                                                            <!-- <div class="col-md-12 lattitude_no"><?//=set_value('lati');?></div>
+                                                            <div class="col-md-12 longitude_no"><?//=set_value('longi');?></div> -->
                                                         </div>
                                                     </div>
                                                 </div>

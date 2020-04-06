@@ -66,5 +66,23 @@ class A_main extends CI_Controller{
         $this->load->view('includes/footer/Footer');
     }
 
+    public function category(){
+        $context['title']='category';
+        $context['active']='categories';
+        $this->load->view('includes/header/Header', $context);
+        $this->load->view('navbar/Base');
+        $this->load->view('admin/Category');
+        $this->load->view('includes/footer/Footer');
+    }
+
+    public function add_category(){
+        $context['title']='category';
+        $context['active']='categories';
+        $this->load->view('includes/header/Header', $context);
+        $this->load->view('navbar/Base');
+        $this->load->view('admin/Add_category');
+        $this->load->view('includes/footer/Footer');
+    }
+
 }
 ?>

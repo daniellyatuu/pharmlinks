@@ -15,6 +15,16 @@
 	<!-- Init JavaScript -->
     <script src="<?=base_url('assets/app');?>/dist/js/init.js"></script>
 
+    <?php
+    if(!empty($active)){
+        if($active == 'add_product' || $active == 'categories'){
+    ?>
+    <script src="<?=base_url('assets/app/');?>/vendors/bower_components/bootstrap-validator/dist/validator.min.js"></script>
+    <?php
+        }
+    }
+    ?>
+
 </body>
 
 </html>

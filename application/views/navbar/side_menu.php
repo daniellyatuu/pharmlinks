@@ -12,7 +12,7 @@
                     <!-- side menu for retailer or ADDO .start -->
                   
                     <li>
-                        <a class="" href="<?=base_url('r_main');?>" data-toggle="collapse" data-target="#dashboard_dr"><div class="pull-left"><i class="zmdi zmdi-landscape mr-20"></i><span class="right-nav-text">Dashboard</span></div><div class="clearfix"></div></a>
+                        <a class="<?php if($active=='retailer_dash'){echo 'active';}?>" href="<?=base_url('r_main');?>" data-toggle="collapse" data-target="#dashboard_dr"><div class="pull-left"><i class="zmdi zmdi-landscape mr-20"></i><span class="right-nav-text">Dashboard</span></div><div class="clearfix"></div></a>
                     </li>
                 
                     <li>
@@ -56,7 +56,7 @@
                     <!-- side menu for wholesaler only .start -->
                     
                     <li>
-                        <a class="<?php if(!empty($highlightWholesalerDash)){echo 'active';}?>" href="<?=base_url('WL_main/index');?>" data-toggle="collapse" data-target="#dashboard_dr"><div class="pull-left"><i class="zmdi zmdi-landscape mr-20"></i><span class="right-nav-text">Dashboard</span></div><div class="clearfix"></div></a>
+                        <a class="<?php if($active=='seller_detail'){echo 'active';}?>" href="<?=base_url('WL_main/index');?>" data-toggle="collapse" data-target="#dashboard_dr"><div class="pull-left"><i class="zmdi zmdi-landscape mr-20"></i><span class="right-nav-text">Dashboard</span></div><div class="clearfix"></div></a>
                     </li>
                     
                     <li>
@@ -66,20 +66,7 @@
                                 <a href="<?=base_url('WL_main/add_my_product');?>">Add product</a>
                             </li>
                             <li>
-                                <a href="<?=base_url('WL_main/available_stock');?>">products list
-                                    <div class="pull-right">
-                                        <span class="label label-info">
-                                            <?php
-                                                // $this->db->where('user_id', $this->session->userdata('unique_user_id'));
-                                                // $this->db->where('status', 'available');
-                                                // $get_product_to_count=$this->db->get('stocks');
-                            
-                                                // $count_product_added=$get_product_to_count->num_rows();
-                                                // echo $count_product_added;
-                                            ?>
-                                        </span>
-                                    </div>
-                                </a>
+                                <a href="<?=base_url('WL_main/available_stock');?>">products list</a>
                             </li>
                         </ul>
                     </li>
@@ -119,7 +106,7 @@
                     </li>
                 
                     <li>
-                        <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#maps_dr"><div class="pull-left"><i class="zmdi zmdi-info-outline mr-20"></i><span class="right-nav-text">Category</span></div><div class="pull-right"><i class="zmdi zmdi-caret-down"></i></div><div class="clearfix"></div></a>
+                        <a class="" href="<?=base_url('a_main/category');?>" data-toggle="collapse" data-target="#maps_dr"><div class="pull-left"><i class="zmdi zmdi-info-outline mr-20"></i><span class="right-nav-text">Category</span></div><div class="clearfix"></div></a>
                         
                     </li>
 
@@ -141,28 +128,7 @@
                     </li>
                 
                     <li>
-                        <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#maps_dr"><div class="pull-left"><i class="zmdi zmdi-info-outline mr-20"></i><span class="right-nav-text">Pharmacy details</span></div><div class="pull-right"><i class="zmdi zmdi-caret-down"></i></div><div class="clearfix"></div></a>
-                        <ul id="maps_dr" class="collapse collapse-level-1">
-                            
-                            <li>
-                                <a href="<?=base_url('Main/pharmacy');?>">
-                                    <?php
-                                        // $this->db->where('pharmacies.user_ID', $this->session->userdata('unique_user_id'));
-                                        // $get_pharm_table_info=$this->db->get('pharmacies');
-                                        
-                                        // $count_pharm_registered=$get_pharm_table_info->num_rows();
-                                        
-                                        // if($count_pharm_registered==0){
-                                        //     echo "Add Pharmacy Details";
-                                        // }else{
-                                        //     echo "View Pharmacy Details";
-                                        // }
-                                        ?>
-                                        here
-                                </a>
-                            </li>
-                            
-                        </ul>
+                        <a class="<?php if($active=='pharmacy_detail'){echo 'active';}?>" href="<?=base_url('general');?>" data-toggle="collapse" data-target="#maps_dr"><div class="pull-left"><i class="zmdi zmdi-info-outline mr-20"></i><span class="right-nav-text">Pharmacy details</span></div><div class="clearfix"></div></a>
                     </li>
 
                 <?php

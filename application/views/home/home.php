@@ -74,7 +74,7 @@
 												</li>
                                                 
                                                 <li>
-													<a href="<?=base_url('registration/index');?>" target="_blank" class="text-warning" style="font-weight: bold;">sign up</a>
+													<a href="<?=base_url('user/register');?>" target="_blank" class="text-warning" style="font-weight: bold;">sign up</a>
 												</li>
                                                 <li>
 													<a href="<?=base_url('user');?>" target="_blank" class="text-warning" style="font-weight: bold;">log in</a>

@@ -124,6 +124,24 @@ function initMap() {
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQSCSiJMsoMca0n65p0vPv5Em8Uk8FjLQ&libraries=places&callback=initMap"
   async defer></script>
 <!-- google map .end -->
+
+<script>
+  $(document).ready(function(){
+    $("form").submit(function (event) {
+      var loc_name1 = $('.location_name').val();
+      var loc_name2 = $('.dir').val();
+      var lattitude = $('.lati').val();
+      var longitude = $('.longi').val();
+      
+      if(loc_name1 != '' && loc_name2 != '' && lattitude != '' && longitude != ''){
+        return;
+      }else{
+        event.preventDefault();
+        $('.loc_div_error').html("location was not detected, please try again");
+      }
+    });
+  });
+</script>
 <?php
 }
 ?>

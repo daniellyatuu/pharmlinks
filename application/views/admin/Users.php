@@ -78,6 +78,9 @@
                             </div>
                             <!-- filter ./end -->
 
+							<?php
+							if($users){
+							?>
                             <div class="dataTables_info" id="datable_1_info" role="status" aria-live="polite" style="margin: 10px 0;">Showing 1 to 10 of 57 entries</div>
 
 							<div class="panel-wrapper collapse in">
@@ -194,10 +197,27 @@
 									</div>
 								</div>
 							</div>
+
+							<?php
+							}
+							?>
 						</div>	
 					</div>
 				</div>
 				<!-- /Row -->
+				
+				<?php
+				if(!$users){
+				?>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel text-center no_more_prd hide_on_print" style="padding: 30px 10px;">
+							<h6 style="font-weight: bold;">No results found</h6>
+							<!-- <p class="text-muted">Try different keywords</p> -->
+						</div>
+					</div>
+				</div>
+				<?php } ?>
 				
 			</div>
 			

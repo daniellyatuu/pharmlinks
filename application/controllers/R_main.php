@@ -21,7 +21,9 @@ class R_main extends CI_Controller{
         
         // $left_rt_dash['leftRtDash']='active';
         // $left_rt_dash['title']='Retailer Dashboard';
-        $this->load->view('includes/header/Header');
+        $context['active']='retailer_dash';
+        $context['title']='retailer';
+        $this->load->view('includes/header/Header', $context);
         $this->load->view('navbar/Base');
         $this->load->view('retailer/Home.php');
         $this->load->view('includes/footer/Footer');
