@@ -41,9 +41,19 @@ class Admin_model extends CI_Model{
         }
     }
 
-    public function dan(){
-        $x = $_GET['sort'];
-        echo $x;
+    public function save_category($category){
+        $this->db->from('category');
+        $this->db->where('name', $category['name']);
+        $this->db->limit(1);
+        $query_category_info=$this->db->get();
+        $count_category = $query_category_info->num_rows();
+        if($count_category == 0){
+            // save category
+            $this->db->insert('category', $category);
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }

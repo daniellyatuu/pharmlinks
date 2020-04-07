@@ -84,5 +84,28 @@ class A_main extends CI_Controller{
         $this->load->view('includes/footer/Footer');
     }
 
+    public function save_category(){
+        // hold data
+        $category = array(
+            'name'=>$this->input->post('category'),
+            'added_by'=>$this->session->userdata('id'),
+        );
+
+        // clean data
+        $clean_category = $this->security->xss_clean($category);
+        
+        $save_category = $this->adminmodel->save_category($category);
+        if(empty($save_category)){
+            
+            // category already exist
+            $this->session->set_flashdata('feedback', 'exists');
+        }else{
+
+            // category saved
+            $this->session->set_flashdata('feedback', 'saved');
+        }
+        redirect('a_main/add_category');
+    }
+
 }
 ?>
