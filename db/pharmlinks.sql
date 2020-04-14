@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 06, 2020 at 03:54 PM
+-- Generation Time: Apr 14, 2020 at 10:43 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.3
 
@@ -34,6 +34,17 @@ CREATE TABLE `category` (
   `added_by` int(11) NOT NULL,
   `date_added` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `category`
+--
+
+INSERT INTO `category` (`id`, `name`, `added_by`, `date_added`) VALUES
+(2, 'category one', 29, '2020-04-08 07:50:22'),
+(3, 'category two', 29, '2020-04-08 07:50:26'),
+(4, 'category three', 29, '2020-04-08 07:50:30'),
+(5, 'category four', 29, '2020-04-08 07:50:35'),
+(6, 'another category', 29, '2020-04-08 07:53:45');
 
 -- --------------------------------------------------------
 
@@ -125,6 +136,65 @@ INSERT INTO `pharmacy` (`id`, `name`, `user`, `location`, `FIN`, `date_registere
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `product`
+--
+
+CREATE TABLE `product` (
+  `id` int(11) NOT NULL,
+  `user` int(11) NOT NULL,
+  `brand_name` varchar(255) NOT NULL,
+  `generic_name` varchar(255) NOT NULL,
+  `category` int(11) NOT NULL,
+  `selling_package` int(11) NOT NULL,
+  `price` int(11) NOT NULL,
+  `discount` int(11) DEFAULT NULL,
+  `country` varchar(50) NOT NULL,
+  `industry` varchar(50) DEFAULT NULL,
+  `quantity` int(11) NOT NULL,
+  `description` varchar(500) NOT NULL,
+  `status` int(1) NOT NULL DEFAULT 1,
+  `date_added` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`id`, `user`, `brand_name`, `generic_name`, `category`, `selling_package`, `price`, `discount`, `country`, `industry`, `quantity`, `description`, `status`, `date_added`) VALUES
+(3, 26, 'asas', 'asas', 4, 4, 32900, 10000, 'asas', 'asas', 10, 'asas', 1, '2020-04-09 10:04:41'),
+(4, 26, 'sdsd', 'sd', 6, 6, 334, 0, '233', '23', 10, '2323', 1, '2020-04-09 11:30:19'),
+(5, 26, 'asas', 'ass', 4, 5, 1000, 0, 'sas', '', 10, '', 1, '2020-04-09 11:40:24'),
+(6, 26, 'asas', 'asas', 5, 4, 2300, 0, 'sdsff', '', 10, 'x', 1, '2020-04-09 12:07:00'),
+(7, 26, 'dgfg', 'dfdf', 4, 5, 4500, 3000, 'dsdsd', '', 10, 'sdsd', 1, '2020-04-09 12:28:48'),
+(8, 26, 'sfdfd', 'dfdfx', 6, 4, 2000, 1400, 'dfdf', 'dfd', 10, 'dfdfg', 1, '2020-04-09 12:35:20'),
+(9, 26, 'sdsxc', 'asas', 6, 3, 200, 0, 'sdsd', 'sdsd', 10, 'asazx', 1, '2020-04-09 12:59:26');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_image`
+--
+
+CREATE TABLE `product_image` (
+  `id` int(11) NOT NULL,
+  `product` int(11) NOT NULL,
+  `filename` varchar(255) NOT NULL,
+  `date_added` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `product_image`
+--
+
+INSERT INTO `product_image` (`id`, `product`, `filename`, `date_added`) VALUES
+(1, 8, '_15864357200pharmlinks_7.JPG.jpeg', '2020-04-09 12:35:22'),
+(2, 8, '_15864357211pharmlinks_9.JPG.jpeg', '2020-04-09 12:35:22'),
+(3, 9, '_1586437166015401975580amoxil_-_Copy.jpg', '2020-04-09 12:59:28'),
+(4, 9, '_15864371671adult-beauty-cosmetic-1029896.jpg', '2020-04-09 12:59:28');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pwd`
 --
 
@@ -145,6 +215,29 @@ INSERT INTO `pwd` (`id`, `user`, `pwd`) VALUES
 (8, 25, '654321'),
 (9, 26, '7654321'),
 (10, 30, '87654321');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `selling_package`
+--
+
+CREATE TABLE `selling_package` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `added_by` int(11) NOT NULL,
+  `date_added` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `selling_package`
+--
+
+INSERT INTO `selling_package` (`id`, `name`, `added_by`, `date_added`) VALUES
+(3, 'selling package one', 29, '2020-04-08 09:39:37'),
+(4, 'second selling package', 29, '2020-04-08 11:22:04'),
+(5, 'third selling package', 29, '2020-04-08 11:22:14'),
+(6, 'fouth selling package', 29, '2020-04-08 11:22:26');
 
 -- --------------------------------------------------------
 
@@ -238,11 +331,33 @@ ALTER TABLE `pharmacy`
   ADD KEY `FK_pharmacy_location` (`location`);
 
 --
+-- Indexes for table `product`
+--
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_product_user` (`user`),
+  ADD KEY `FK_product_category` (`category`),
+  ADD KEY `FK_product_selling_package` (`selling_package`);
+
+--
+-- Indexes for table `product_image`
+--
+ALTER TABLE `product_image`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_product_image_product` (`product`);
+
+--
 -- Indexes for table `pwd`
 --
 ALTER TABLE `pwd`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FK_pwd_user` (`user`);
+
+--
+-- Indexes for table `selling_package`
+--
+ALTER TABLE `selling_package`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `user`
@@ -266,7 +381,7 @@ ALTER TABLE `verification_code`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `group`
@@ -287,10 +402,28 @@ ALTER TABLE `pharmacy`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
+-- AUTO_INCREMENT for table `product`
+--
+ALTER TABLE `product`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `product_image`
+--
+ALTER TABLE `product_image`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `pwd`
 --
 ALTER TABLE `pwd`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `selling_package`
+--
+ALTER TABLE `selling_package`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -314,6 +447,20 @@ ALTER TABLE `verification_code`
 ALTER TABLE `pharmacy`
   ADD CONSTRAINT `FK_pharmacy_location` FOREIGN KEY (`location`) REFERENCES `location` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_pharmacy_user` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `product`
+--
+ALTER TABLE `product`
+  ADD CONSTRAINT `FK_product_category` FOREIGN KEY (`category`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_product_selling_package` FOREIGN KEY (`selling_package`) REFERENCES `selling_package` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_product_user` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `product_image`
+--
+ALTER TABLE `product_image`
+  ADD CONSTRAINT `FK_product_image_product` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `pwd`

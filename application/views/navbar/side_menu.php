@@ -56,14 +56,14 @@
                     <!-- side menu for wholesaler only .start -->
                     
                     <li>
-                        <a class="<?php if($active=='seller_detail'){echo 'active';}?>" href="<?=base_url('WL_main/index');?>" data-toggle="collapse" data-target="#dashboard_dr"><div class="pull-left"><i class="zmdi zmdi-landscape mr-20"></i><span class="right-nav-text">Dashboard</span></div><div class="clearfix"></div></a>
+                        <a class="<?php if($active=='seller_detail'){echo 'active';}?>" href="<?=base_url('w_main');?>" data-toggle="collapse" data-target="#dashboard_dr"><div class="pull-left"><i class="zmdi zmdi-landscape mr-20"></i><span class="right-nav-text">Dashboard</span></div><div class="clearfix"></div></a>
                     </li>
                     
                     <li>
-                        <a class="<?php if(!empty($highlight)){echo 'active';}?>" href="javascript:void(0);" data-toggle="collapse" data-target="#app_dr"><div class="pull-left"><i class="fa fa-medkit mr-20"></i><span class="right-nav-text">products </span></div><div class="pull-right"><i class="zmdi zmdi-caret-down"></i></div><div class="clearfix"></div></a>
+                        <a class="<?php if($active=='add_product'){echo 'active';}?>" href="javascript:void(0);" data-toggle="collapse" data-target="#app_dr"><div class="pull-left"><i class="fa fa-medkit mr-20"></i><span class="right-nav-text">products </span></div><div class="pull-right"><i class="zmdi zmdi-caret-down"></i></div><div class="clearfix"></div></a>
                         <ul id="app_dr" class="collapse collapse-level-1">
                             <li>
-                                <a href="<?=base_url('WL_main/add_my_product');?>">Add product</a>
+                                <a href="<?=base_url('w_main/add');?>" class="<?php if($active=='add_product'){echo 'active-page';}?>">Add product</a>
                             </li>
                             <li>
                                 <a href="<?=base_url('WL_main/available_stock');?>">products list</a>
@@ -106,8 +106,11 @@
                     </li>
                 
                     <li>
-                        <a class="" href="<?=base_url('a_main/category');?>" data-toggle="collapse" data-target="#maps_dr"><div class="pull-left"><i class="zmdi zmdi-info-outline mr-20"></i><span class="right-nav-text">Category</span></div><div class="clearfix"></div></a>
-                        
+                        <a class="<?php if($active=='categories'){echo 'active';}?>" href="<?=base_url('a_main/category');?>" data-toggle="collapse" data-target="#maps_dr"><div class="pull-left"><i class="zmdi zmdi-info-outline mr-20"></i><span class="right-nav-text">Category</span></div><div class="clearfix"></div></a>
+                    </li>
+
+                    <li>
+                        <a class="<?php if($active=='package'){echo 'active';}?>" href="<?=base_url('a_main/package');?>" data-toggle="collapse" data-target="#maps_dr"><div class="pull-left"><i class="zmdi zmdi-info-outline mr-20"></i><span class="right-nav-text">Selling package</span></div><div class="clearfix"></div></a>
                     </li>
 
 

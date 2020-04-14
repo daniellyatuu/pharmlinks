@@ -81,7 +81,7 @@
 							<?php
 							if($users){
 							?>
-                            <div class="dataTables_info" id="datable_1_info" role="status" aria-live="polite" style="margin: 10px 0;">Showing 1 to 10 of 57 entries</div>
+                            <div class="dataTables_info" id="datable_1_info" role="status" aria-live="polite" style="margin: 10px 0;"><?=$pagermessage;?></div>
 
 							<div class="panel-wrapper collapse in">
 								<div class="panel-body">

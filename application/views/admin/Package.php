@@ -5,13 +5,13 @@
 				<!-- Title -->
 				<div class="row heading-bg">
 					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-					  <h5 class="txt-dark">Category</h5>
+					  <h5 class="txt-dark">Selling-package</h5>
 					</div>
 					<!-- Breadcrumb -->
 					<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
 					  <ol class="breadcrumb">
 						<li><a href="index.html">Dashboard</a></li>
-						<li><a href="#"><span>category</span></a></li>
+						<li><a href="#"><span>selling-package</span></a></li>
 					  </ol>
 					</div>
 					<!-- /Breadcrumb -->
@@ -24,7 +24,6 @@
 						<div class="panel panel-default card-view">
                             
                             <!-- filter .start -->
-
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="row">
@@ -52,8 +51,8 @@
                                             </form>
                                         </div>
                                         <div class="col-md-4">
-                                            <a href="<?=base_url('a_main/add_category');?>" class="btn btn-primary btn-outline" style="float:right;">
-                                                <i class="icofont icofont-job-search m-r-5"></i> Add Category
+                                            <a href="<?=base_url('a_main/add_package');?>" class="btn btn-primary btn-outline" style="float:right;">
+                                                <i class="icofont icofont-job-search m-r-5"></i> Add Package
                                             </a>
                                         </div>
                                     </div>
@@ -66,9 +65,10 @@
 							
 							<div class="panel-wrapper collapse in">
 								<div class="panel-body">
-									<?php
-									if($category_data){
-									?>
+									
+                                    <?php
+                                    if($package_data){
+                                    ?>
 									<div class="table-wrap">
 										<div class="table-responsive">
 											<table id="datable_1" class="table table-hover display  pb-30" >
@@ -89,27 +89,28 @@
 													</tr>
 												</tfoot>
 												<tbody>
-													<?php
-													foreach($category_data as $category_row){
-													?>
+													
+                                                    <?php
+                                                    foreach($package_data as $package_row){
+                                                    ?>
 													<tr>
-														<td><?=$category_row->name;?></td>
+														<td><?=$package_row->name;?></td>
 														<td class="text-center">
-															<?php
-															$this->db->where('id', $category_row->added_by);
-															$user_data = $this->db->get('user');
-															foreach($user_data->result() as $user_row){
-																$user = $user_row->username;
-															}
-															echo $user;
-															?>
+                                                            <?php
+                                                            $this->db->where('id', $package_row->added_by);
+                                                            $user_data = $this->db->get('user');
+                                                            foreach($user_data->result() as $user_row){
+                                                                $user = $user_row->username;
+                                                            }
+                                                            echo $user;
+                                                            ?>
 														</td>
 														<td class="text-center">
-														<?=$category_row->date_added?>
+														<?=$package_row->date_added?>
 														</td>
 														<td class="text-right"></td>
 													</tr>
-													<?php } ?>
+                                                    <?php } ?>
 													
 												</tbody>
                                             </table>
@@ -117,7 +118,7 @@
 										</div>
 										                                      
 									</div>
-									<?php } ?>
+                                    <?php } ?>
 								</div>
 							</div>
 							
@@ -127,7 +128,7 @@
 				<!-- /Row -->
 				
 				<?php
-				if(!$category_data){
+				if(!$package_data){
 				?>
 				<div class="row">
 					<div class="col-md-12">
@@ -137,7 +138,7 @@
 						</div>
 					</div>
 				</div>
-				<?php }?>
+                <?php } ?>
 				
 			</div>
 			

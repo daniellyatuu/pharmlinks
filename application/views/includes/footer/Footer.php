@@ -17,7 +17,7 @@
 
     <?php
     if(!empty($active)){
-        if($active == 'add_product' || $active == 'categories'){
+        if($active == 'add_product' || $active == 'categories' || $active == 'package'){
     ?>
     <script src="<?=base_url('assets/app/');?>/vendors/bower_components/bootstrap-validator/dist/validator.min.js"></script>
     <?php

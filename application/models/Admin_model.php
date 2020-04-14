@@ -41,19 +41,47 @@ class Admin_model extends CI_Model{
         }
     }
 
-    public function save_category($category){
+    public function save_category($clean_category){
         $this->db->from('category');
-        $this->db->where('name', $category['name']);
+        $this->db->where('name', $clean_category['name']);
         $this->db->limit(1);
         $query_category_info=$this->db->get();
         $count_category = $query_category_info->num_rows();
         if($count_category == 0){
             // save category
-            $this->db->insert('category', $category);
+            $this->db->insert('category', $clean_category);
             return true;
         }else{
             return false;
         }
+    }
+
+    public function get_category(){
+        $this->db->order_by('id', 'desc');
+        $category_query = $this->db->get('category');
+        return $category_query->result();
+    }
+
+
+    public function save_package($clean_package){
+        $this->db->from('selling_package');
+        $this->db->where('name', $clean_package['name']);
+        $this->db->limit(1);
+        $query_package_info=$this->db->get();
+        $count_package = $query_package_info->num_rows();
+        if($count_package == 0){
+            // save category
+            $this->db->insert('selling_package', $clean_package);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function get_selling_package(){
+        $this->db->order_by('id', 'desc');
+        $category_query = $this->db->get('selling_package');
+        return $category_query->result();
     }
 
 }
