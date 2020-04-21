@@ -120,7 +120,7 @@
                                                 <label class="control-label mb-10">Price <abbr style="color: red;" title="required">*</abbr></label>
                                                 <div class="input-group">
                                                     <div class="input-group-addon"><i class="">Tsh</i></div>
-                                                    <input type="number" class="form-control" data-error="Please fill out this field." name="price" required placeholder="Enter price">
+                                                    <input type="number" class="form-control" data-error="Please fill out this field." name="price" required placeholder="Enter price" min='1'>
                                                 </div>
                                                 <div class="help-block with-errors"></div>
                                             </div>
@@ -131,7 +131,7 @@
                                                 <label class="control-label mb-10">Discount Price</label>
                                                 <div class="input-group">
                                                     <div class="input-group-addon"><i class="">Discount</i></div>
-                                                    <input type="number" class="form-control" name="discount" placeholder="Enter discount">
+                                                    <input type="number" class="form-control" name="discount" placeholder="Enter discount" min='0'>
                                                 </div>
                                                 <span id="display_percentage" class="text-success"></span>
                                                 <div></div>
@@ -177,7 +177,7 @@
                                             <label class="control-label mb-10">Product Quantity <!--<abbr style="color: red;" title="required">*</abbr>--></label>
                                             <div class="input-group">
                                                 <div class="input-group-addon"><i class="">qty</i></div>
-                                                <input type="number" class="form-control" data-error="Please fill out this field." name="qty" value="10">
+                                                <input type="number" class="form-control" data-error="Please fill out this field." name="qty" value="10" min='0'>
                                             </div>
                                             <div class="help-block with-errors"></div>
                                         </div>
@@ -237,16 +237,3 @@
         <!-- /Row -->
 
     </div>
-
-    <!-- Footer -->
-    <footer class="footer container-fluid pl-30 pr-30">
-        <div class="row">
-            <div class="col-sm-12">
-                <p class="text-center"><?=date('Y');?> &copy; PharmLink.</p>
-            </div>
-        </div>
-    </footer>
-    <!-- /Footer -->
-
-</div>
-<!-- /Main Content -->

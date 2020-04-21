@@ -16,11 +16,11 @@
                     </li>
                 
                     <li>
-                        <a class="" href="<?//=base_url('shops');?>" data-toggle="collapse" data-target="#products"><div class="pull-left"><i class="fa fa-medkit mr-20"></i><span class="right-nav-text">Shop Now</span></div><div class="clearfix"></div></a>
+                        <a class="<?php if($active=='pharmacies'){echo 'active';}?>" href="<?=base_url('shops');?>" data-toggle="collapse" data-target="#products"><div class="pull-left"><i class="fa fa-medkit mr-20"></i><span class="right-nav-text">Shop Now</span></div><div class="clearfix"></div></a>
                     </li>
                 
                     <li>
-                        <a class="" href="<?=base_url('Cart/index');?>"><div class="pull-left"><i class="ti-shopping-cart mr-20"></i><span class="right-nav-text">My cart</span></div>
+                        <a class="<?php if($active=='cart_index'){echo 'active';}?>" href="<?=base_url('cart');?>"><div class="pull-left"><i class="ti-shopping-cart mr-20"></i><span class="right-nav-text">My cart</span></div>
                             <div class="pull-right">
                                 <span class="label label-info">
                                     <span id="div_cart2">
@@ -60,24 +60,24 @@
                     </li>
                     
                     <li>
-                        <a class="<?php if($active=='add_product'){echo 'active';}?>" href="javascript:void(0);" data-toggle="collapse" data-target="#app_dr"><div class="pull-left"><i class="fa fa-medkit mr-20"></i><span class="right-nav-text">products </span></div><div class="pull-right"><i class="zmdi zmdi-caret-down"></i></div><div class="clearfix"></div></a>
+                        <a class="<?php if($active=='add_product' or $active=='view_products'){echo 'active';}?>" href="javascript:void(0);" data-toggle="collapse" data-target="#app_dr"><div class="pull-left"><i class="fa fa-medkit mr-20"></i><span class="right-nav-text">products </span></div><div class="pull-right"><i class="zmdi zmdi-caret-down"></i></div><div class="clearfix"></div></a>
                         <ul id="app_dr" class="collapse collapse-level-1">
                             <li>
                                 <a href="<?=base_url('w_main/add');?>" class="<?php if($active=='add_product'){echo 'active-page';}?>">Add product</a>
                             </li>
                             <li>
-                                <a href="<?=base_url('WL_main/available_stock');?>">products list</a>
+                                <a href="<?=base_url('w_main/products');?>" class = "<?php if($active=='view_products'){echo 'active-page';}?>">products list</a>
                             </li>
                         </ul>
                     </li>
             
                     <li>
-                        <a href="<?//=base_url('WL_main/received_order');?>" class="" data-toggle="collapse" data-target="#pages_dr"><div class="pull-left"><i class="ti-package mr-20"></i><span class="right-nav-text">received orders</span></div><div class="clearfix"></div></a>
+                        <a href="<?//=base_url('WL_main/received_order');?>" class="" data-toggle="collapse" data-target="#pages_dr"><div class="pull-left"><i class="ti-package mr-20"></i><span class="right-nav-text">Orders</span></div><div class="clearfix"></div></a>
                     </li>
                     
-                    <li>
-                        <a href="javascript:void(0);" class="<?php if(!empty($viewDailySales)){echo 'active';}?>" data-toggle="collapse" data-target="#wholesaler_sales"><div class="pull-left"><i class="fa fa-plus-square mr-20"></i><span class="right-nav-text">sales</span></div><div class="pull-right"></div><div class="clearfix"></div></a>
-                    </li>
+                    <!-- <li>
+                        <a href="javascript:void(0);" class="<?php// if(!empty($viewDailySales)){echo 'active';}?>" data-toggle="collapse" data-target="#wholesaler_sales"><div class="pull-left"><i class="fa fa-plus-square mr-20"></i><span class="right-nav-text">sales</span></div><div class="pull-right"></div><div class="clearfix"></div></a>
+                    </li> -->
 
                     <!-- side menu for wholesaler only ./end -->
 
@@ -86,7 +86,7 @@
                 ?>
 
                     <!-- side menu for admin .start -->
-
+                    
                     <li>
                         <a href="<?=base_url('a_main');?>" class="<?php if($active=='admin_dash'){echo 'active';}?>" data-toggle="collapse" data-target="#dashboard_dr"><div class="pull-left"><i class="zmdi zmdi-landscape mr-20"></i><span class="right-nav-text">Dashboard</span></div><div class="clearfix"></div></a>
                     </li>

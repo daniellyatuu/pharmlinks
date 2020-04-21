@@ -13,7 +13,16 @@ class Admin_model extends CI_Model{
     }
 
     public function user_count(){
-        return $this->db->count_all('user');
+        if($_GET){
+            $email=$_GET['email'];
+            $category = $_GET['role'];
+
+            $this->db->like('email', $email, 'both');
+            $this->db->like('group', $category);
+        }
+
+        $all_users = $this->db->get('user');
+        return $all_users->num_rows();
     }
 
     public function fetch_users($limit, $start){

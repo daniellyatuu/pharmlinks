@@ -78,6 +78,8 @@ class User extends CI_Controller{
                 $this->session->set_flashdata('loggedin','true');
 
                 if($this->session->userdata('group')=='retailer' or $this->session->userdata('group')=='ADDO'){
+                    // check if user have cart data
+                    $this->usermodel->check_cart();
                     redirect('r_main');
                 }else if($this->session->userdata('group')=='wholesaler'){
                     redirect('w_main');
@@ -180,23 +182,25 @@ class User extends CI_Controller{
     }
 
     public function logout(){
-        // if($this->session->userdata('user_category')=='retailer'){
-        //     //insert cart data to temp_cart
-        //     $cartData=$this->cart->contents();
-        //     if(!empty($cartData)){
-        //         foreach($cartData as $cartDataRow){
-        //             $cart_data=array(
-        //                 'userid'=>$this->session->userdata('unique_user_id'),
-        //                 'productid'=>$cartDataRow['id'],
-        //                 'productPrice'=>$cartDataRow['price'],
-        //                 'quantity'=>$cartDataRow['qty'],
-        //                 'productImage'=>$cartDataRow['name'],
-        //                 'wholesalerid'=>$cartDataRow['optional']['eachWholesalerId']
-        //             );
-        //             $this->db->insert('temp_cart', $cart_data);
-        //         }
-        //     }
-        // }
+        if($this->session->userdata('group')=='retailer' or $this->session->userdata('group')=='ADDO'){
+            // insert cart data to temp_cart
+            $cartData=$this->cart->contents();
+            if(!empty($cartData)){
+                foreach($cartData as $cartDataRow){
+                    $cart_data=array(
+                        'user_id'=>$this->session->userdata('id'),
+                        'product_id'=>$cartDataRow['id'],
+                        'price'=>$cartDataRow['price'],
+                        'quantity'=>$cartDataRow['qty'],
+                        'image'=>$cartDataRow['name'],
+                        'seller_id'=>$cartDataRow['optional']['eachWholesalerId']
+                    );
+                    $this->db->insert('cart', $cart_data);
+                }
+            }
+        }
+        // echo 'then continue';
+        // exit();
         
         //remove session
         $this->session->sess_destroy();

@@ -57,7 +57,7 @@
             if($this->session->userdata('group')=='retailer' or $this->session->userdata('group')=='ADDO'){
             ?>
             <li class="dropdown alert-drp">
-                <a href="<?=base_url('Cart/index');?>"><i class="ti-shopping-cart top-nav-icon"></i>
+                <a href="<?=base_url('cart');?>"><i class="ti-shopping-cart top-nav-icon"></i>
                     <span class="top-nav-icon-badge">
                         <span id="div_cart">
                             <?php

@@ -4,7 +4,7 @@
         
         <!-- Row -->
         <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                 <div class="panel panel-default card-view pa-0">
                     <div class="panel-wrapper collapse in">
                         <div class="panel-body pa-0">
@@ -15,15 +15,15 @@
                                             <span class="txt-light block counter">
                                                 <span class="counter-anim">
                                                     <?php
-                                                    // $this->db->where('user_id', $this->session->userdata('unique_user_id'));
-                                                    // $this->db->where('stocks.status', 'available');
-                                                    // $count_all_products=$this->db->count_all_results('stocks');
-                                                    // echo $count_all_products;
+                                                    $this->db->where('user', $this->session->userdata('id'));
+                                                    $this->db->where('status', 1);
+                                                    $count_products=$this->db->count_all_results('product');
+                                                    echo $count_products;
                                                     ?>
                                                 </span>
                                             </span>
                                             <span class="weight-500 uppercase-font txt-light block font-13">my products</span>
-                                            <a href="<?=base_url('WL_main/available_stock');?>" class="txt-dark block font-13">View all</a>
+                                            <a href="<?=base_url('w_main/products');?>" class="txt-dark block font-13">View all</a>
                                         </div>
                                         <div class="col-xs-6 text-center  pl-0 pr-0 data-wrap-right">
                                             <i class="fa fa-medkit txt-light data-right-rep-icon"></i>
@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                 <div class="panel panel-default card-view pa-0">
                     <div class="panel-wrapper collapse in">
                         <div class="panel-body pa-0">
@@ -46,17 +46,17 @@
                                             <span class="txt-light block counter">
                                                 <span class="counter-anim">
                                                     <?php
-                                                    // $this->db->where('stocks.user_id', $this->session->userdata('unique_user_id'));    
-                                                    // $this->db->where('stocks.status', 'available');
-                                                    // $this->db->where('stocks.wholesaler_quantity', '0');
+                                                    $this->db->where('user', $this->session->userdata('id'));    
+                                                    $this->db->where('status', 1);
+                                                    $this->db->where('quantity', 0);
 
-                                                    // $count_out_of_stock=$this->db->count_all_results('stocks');
-                                                    // echo $count_out_of_stock;
+                                                    $count_out_of_stock=$this->db->count_all_results('product');
+                                                    echo $count_out_of_stock;
                                                     ?>
                                                 </span>
                                             </span>
                                             <span class="weight-500 uppercase-font txt-light block font-13">Out of stock</span>
-                                            <a href="<?=base_url('WL_main/available_stock');?>/stock_ended" class="txt-dark block font-13">View all</a>
+                                            <!-- <a href="<?//=base_url('WL_main/available_stock');?>/stock_ended" class="txt-dark block font-13">View all</a> -->
                                         </div>
                                         <div class="col-xs-6 text-center  pl-0 pr-0 data-wrap-right">
                                             <i class="ti-stats-down txt-light data-right-rep-icon"></i>
@@ -68,7 +68,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                 <div class="panel panel-default card-view pa-0">
                     <div class="panel-wrapper collapse in">
                         <div class="panel-body pa-0">
@@ -78,40 +78,14 @@
                                         <div class="col-xs-6 text-center pl-0 pr-0 data-wrap-left">
                                             <span class="txt-light block counter">
                                                 <span class="counter-anim"><!--  -->
-                                                    <?php
-                                                    //get all expire date of each product
-                                                    // $this->db->where('user_id', $this->session->userdata('unique_user_id'));
-                                                    // $this->db->where('status', 'available');
-                                                    // $all_prd=$this->db->get('stocks');
-                                                    
-                                                    // $count_near_expired=0;
-                                                    // foreach($all_prd->result() as $all_prd_row){
-                                                    //     $each_prd_id=$all_prd_row->product_ID;
-                                                    //     $prd_expire_date=$all_prd_row->expire_date;
-                                                        
-                                                    //     if(!empty($prd_expire_date)){
-                                                    //         $todaydate=date('d-m-Y');
-                                                    //         $todayDateCreate=date_create($todaydate);
-                                                    //         $expireDate=date_create($prd_expire_date);
-                                                    //         $date_range=date_diff($todayDateCreate, $expireDate);
-                                                    //         $day=$date_range->format("%R%a");
-                                                            
-                                                    //         if($day>'0' && $day<='31'){
-                                                    //             $count_near_expired++;
-                                                    //         }else{
-                                                    //             continue;
-                                                    //         }
-                                                    //     }
-                                                    // }
-                                                    // echo $count_near_expired;
-                                                    ?>
+                                                    343
                                                 </span>
                                             </span>
-                                            <span class="weight-500 uppercase-font txt-light block">near expiry date</span>
+                                            <span class="weight-500 uppercase-font txt-light block">Orders</span>
                                             <!--<a href="<?//=base_url('Main_filter/deleted');?>" class="txt-dark block font-13">View all</a>-->
                                         </div>
                                         <div class="col-xs-6 text-center  pl-0 pr-0 data-wrap-right">
-                                            <i class="ti-calendar txt-light data-right-rep-icon"></i>
+                                            <i class="ti-package txt-light data-right-rep-icon"></i>
                                         </div>
                                     </div>	
                                 </div>
@@ -120,6 +94,9 @@
                     </div>
                 </div>
             </div>
+            <?php
+            /*{
+            ?>
             <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
                 <div class="panel panel-default card-view pa-0">
                     <div class="panel-wrapper collapse in">
@@ -184,7 +161,7 @@
                                                     $total_today_sales=$total_today_sales+$get_today_sale;
                                                     
                                                     echo $get_today_sale.', ';
-                                                }*/
+                                                }*//*
                                                 //echo number_format($total_today_sales);
                                                 ?>
                                                 </span></span>
@@ -201,15 +178,95 @@
                     </div>
                 </div>
             </div>
+            <?php
+            }*/
+            ?>
         </div>
         <!-- /Row -->
 
+        
         <!-- Row -->
         <div class="row">
-            <div class="col-lg-8 col-md-7 col-sm-12 col-xs-12 display_new_orders">
+            <div class="col-lg-12 col-md-12 display_new_orders">
+            
+            <div class="panel panel-default card-view panel-refresh">
+            <div class="refresh-container">
+                <div class="la-anim-1"></div>
+            </div>
+            <div class="panel-heading">
+                <div class="pull-left">
+                    <h6 class="panel-title txt-dark" style="text-transform: lowercase;">New orders from retailers</h6>
+                </div>
+                <div class="pull-right">
+                    <!--<a href="#" class="pull-left inline-block refresh mr-15" id="refresh_icon">
+                        <i class="zmdi zmdi-replay"></i>
+                    </a>-->
+                    <a href="#" class="pull-left inline-block full-screen mr-15">
+                        <i class="zmdi zmdi-fullscreen"></i>
+                    </a>
+                    
+                    <!--<div class="pull-left inline-block dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false" role="button"><i class="zmdi zmdi-more-vert"></i></a>
+                        <ul class="dropdown-menu bullet dropdown-menu-right"  role="menu">
+                            <li role="presentation"><a href="javascript:void(0)" role="menuitem"><i class="icon wb-reply" aria-hidden="true"></i>Edit</a></li>
+                            <li role="presentation"><a href="javascript:void(0)" role="menuitem"><i class="icon wb-share" aria-hidden="true"></i>Delete</a></li>
+                            <li role="presentation"><a href="javascript:void(0)" role="menuitem"><i class="icon wb-trash" aria-hidden="true"></i>New</a></li>
+                        </ul>
+                    </div>-->
+                    
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            ';
+            $order_data.='
+            <div class="panel-wrapper collapse in" id="order_body">
                 
+                <div class="panel-body row pa-0">
+                    <div class="table-wrap">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">ORDER ID</th>
+                                        <th class="text-center">FROM</th>
+                                        <th class="text-center">PRICE</th>
+                                        <th class="text-center">DATE ORDERED</th>
+                                        <th class="text-right">ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr>
+                                    <td class="text-left"><span class="txt-dark weight-500">sdsd</span></td>
+                                    <td class="text-center">343434</td>
+                                    
+                                    <td class="text-center">
+                                        <span class="txt-success">Tsh 32323</span>
+                                    </td>
+                                    
+                                    <td class="text-center">
+                                        <span class="txt-dark weight-500">fdfdf</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <a class="order_action accept_btn" href="javascript:void(0);" ordernumber="">Accept</a>
+                                        
+                                        <a class="order_action" href="">view</a>
+                                    </td>
+                                </tr>
+                    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>	
+                    </div>
+                </div>
             </div>
             
+            </div>
+            
+            <?php
+            /*{
+            ?>
             <!--top 5 sold product .start-->
             <div class="col-lg-4 col-md-5 col-sm-12 col-xs-12">
                 <div class="panel panel-default card-view panel-refresh">
@@ -281,7 +338,7 @@
                             /*if($count_prd=5){
                             ?>
                             <div class="col-xs-12 text-center"><a href="javascript:void(0);" class="prd_statistic_link">view all product statistics <i class="ti-angle-double-down"></i></a></div>
-                            <?php }*/ ?>
+                            <?php }*//* ?>
                         </div>	
                     </div>
                     
@@ -293,10 +350,15 @@
                 
             </div>
             <!--top 5 sold product .end-->
-            
+            <?php
+            }*/
+            ?>
         </div>	
         <!-- Row -->
         
+        <?php
+        /*{
+        ?>
         <!-- Row -->
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -443,51 +505,8 @@
             
         </div>
         <!-- /Row -->
+        <?php
+        }*/
+        ?>
 
     </div>
-    
-    <!-- accept order .start -->
-    <form method="post" action="<?=base_url("WL_main/view_order/accept");?>">
-        <div class="modal fade" id="accept_order" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h5 class="modal-title" id="exampleModalLabel1">ACCEPT ORDER <strong class="unique_order_no"></strong></h5>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            
-                            <div class="payment_method">
-                                <input type="hidden" class="form-control uniqueOrderNo" name="orderno" value="">
-                                
-                                <div class="text-default">
-                                    please accept the order to help buyer to track this order
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default btn-xs" data-dismiss="modal" >Close</button>
-                        <button type="submit" class="btn btn-warning btn-xs accept_order_btn">Confirm</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-    <!-- accept order .end -->
-    
-    <!-- Footer -->
-    <footer class="footer container-fluid pl-30 pr-30">
-        <div class="row">
-            <div class="col-sm-12">
-                <p class="text-center"><?=date('Y');?> &copy; Pharmlinks.</p>
-            </div>
-        </div>
-    </footer>
-    <!-- /Footer -->
-
-</div>
-<!-- /Main Content -->

@@ -26,16 +26,52 @@
 	<!-- bootstrap-select CSS -->
 	<link href="<?=base_url('assets/app');?>/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>
 	
-    <?php /*{ ?>
-	<!-- Bootstrap Switches CSS -->
-	<link href="<?//=base_url('assets/app');?>/vendors/bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
+	<?php
+	if(!empty($active)){
+
+		if($active == 'pharmacies' || $active == 'cart_index'){
+	?>
+	<link href="<?php echo base_url('assets/app');?>/vendors/bower_components/jquery-toast-plugin/dist/jquery.toast.min.css" rel="stylesheet" type="text/css">
+	<?php
+		}
+
+		if($active == 'cart_index'){
+	?>
+	<style>
+		.zoom_image{
+			padding: 0;
+			transition: transform .2s;
+			margin: 0 auto;
+		}
 		
-	<!-- switchery CSS -->
-	<link href="<?//=base_url('assets/app');?>/vendors/bower_components/switchery/dist/switchery.min.css" rel="stylesheet" type="text/css"/>
-	<?php }*/ ?>
-    
+		.zoom_image:hover{
+			-ms-transform: scale(2.9); /* IE 9 */
+			-webkit-transform: scale(2.9); /* Safari 3-8 */
+			transform: scale(2.9);
+			cursor: zoom-in;
+		}
+		
+		.disable_page{
+			pointer-events: none;
+		}
+	</style>
+	<?php
+		}
+	}
+	?>
+
 	<!-- Custom CSS -->
 	<link href="<?=base_url('assets/app');?>/dist/css/style.css" rel="stylesheet" type="text/css">
+	<!--autocomplete field-->
+	<link rel="stylesheet" href="<?php echo base_url('assets/app');?>/autocomplete/autocomplete.css">
+
+	<style>
+	.panel-body h6, .long_text {
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	</style>
 </head>
 
 <body>

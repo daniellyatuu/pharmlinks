@@ -117,5 +117,69 @@ class User_model extends CI_Model{
         return $pwd_data->result();
     }
 
+    public function check_cart(){
+        //check if user have product on cart table
+        $this->db->where('user_id', $this->session->userdata('id'));
+        $cart_result=$this->db->get('cart');
+        //check if there product in cart
+        $count_cart=$cart_result->num_rows();
+        
+        if($count_cart!=0){
+            foreach($cart_result->result() as $cartDataRow){
+                $cartProductData=array(
+                    'id'=>$cartDataRow->product_id,
+                    'name'=>$cartDataRow->image,
+                    'price'=>$cartDataRow->price,
+                    'qty'=>$cartDataRow->quantity,
+                    'optional'=>array(
+                        'eachWholesalerId'=>$cartDataRow->seller_id
+                    )
+                );
+                $cart_insert=$this->cart->insert($cartProductData);
+            }
+
+            // delete data from cart table after get them
+            $this->db->where('user_id', $this->session->userdata('id'));
+            $this->db->delete('cart');
+                
+            //update cart
+            $cart_content=$this->cart->contents();
+            if(!empty($cart_content)){
+                foreach($cart_content as $cartitems){
+                    $prdID=$cartitems['id'];
+                    $prdQTY=$cartitems['qty'];
+                    
+                    //campare ordered quantity with in-stock products and check if product is available
+                    
+                    $this->db->where('id', $prdID);
+                    $get_stock_info=$this->db->get('product');
+                    foreach($get_stock_info->result() as $prd_info_row){
+                        $in_stock=$prd_info_row->quantity;
+                        $prd_status=$prd_info_row->status;
+                        
+                        if($prd_status=='deleted'){
+                            $productQuantity=0;
+                            $prdrowid=$cartitems['rowid'];
+                        }else{
+                            if($in_stock<$prdQTY){
+                                $productQuantity=$in_stock;
+                                $prdrowid=$cartitems['rowid'];
+                            }else{
+                                $productQuantity=$prdQTY;
+                                $prdrowid=$cartitems['rowid'];
+                            }
+                        }
+                        
+                        $cartUpdate=array(
+                            'rowid'=>$prdrowid,
+                            'qty'=>$productQuantity
+                        );
+                        $this->cart->update($cartUpdate);
+                    }
+                }
+            }
+        }
+    }
+
 }
 ?>
