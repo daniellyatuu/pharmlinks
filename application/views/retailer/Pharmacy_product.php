@@ -139,7 +139,7 @@
                                 </div>
                                 
                                 <div class="info">
-                                    <h6><a href=""><?=$product->brand_name;?><br><small><?=$product->generic_name;?></small></a></h6>
+                                    <h6><a href="<?=base_url('r_main/info');?>/<?=$eachProductId;?>"><?=$product->brand_name;?><br><small><?=$product->generic_name;?></small></a></h6>
                                     
                                     <div class="row">
                                         <div class="col-md-12 long_text">

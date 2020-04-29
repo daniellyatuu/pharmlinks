@@ -13,6 +13,8 @@ class R_main extends CI_Controller{
         if($this->session->userdata('group')!='retailer' and $this->session->userdata('group')!='ADDO'){
             redirect('user');
         }
+
+        $this->load->model('R_main_model', 'r_mainmodel');
     }
     
     public function index(){
@@ -26,6 +28,27 @@ class R_main extends CI_Controller{
         $this->load->view('includes/header/Header', $context);
         $this->load->view('navbar/Base');
         $this->load->view('retailer/Home.php');
+        $this->load->view('includes/footer/Footer');
+    }
+
+    public function info(){
+        //count each product clicks
+        $product_id=$this->uri->segment(3);
+        $data = $this->r_mainmodel->product_details($product_id);
+        if(empty($data)){
+            redirect('shops');
+        }
+
+        foreach($data as $product_row){
+            $product_name = $product_row->brand_name;
+        }
+        
+        $context['active']='product_details';
+        $context['title']=$product_name;
+        $context['product']=$data;
+        $this->load->view('includes/header/Header', $context);
+        $this->load->view('navbar/Base');
+        $this->load->view('retailer/Product_detail');
         $this->load->view('includes/footer/Footer');
     }
 

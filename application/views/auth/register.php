@@ -115,8 +115,8 @@
                                                         
                                                         <div class="row locationInfoShow">
                                                             <div class="col-md-12 locationName"><?=set_value('location_name');?></div>
-                                                            <!-- <div class="col-md-12 lattitude_no"><?//=set_value('lati');?></div>
-                                                            <div class="col-md-12 longitude_no"><?//=set_value('longi');?></div> -->
+                                                            <div class="col-md-12 lattitude_no" style = "display:none;"><?=set_value('lati');?></div>
+                                                            <div class="col-md-12 longitude_no" style = "display:none;"><?=set_value('longi');?></div>
                                                         </div>
                                                     </div>
                                                 </div>

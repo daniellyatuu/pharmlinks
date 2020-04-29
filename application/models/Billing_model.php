@@ -6,9 +6,16 @@ class Billing_model extends CI_Model{
     function __construct(){
         parent:: __construct();
     }
+
+    public function save_order($clean_order_data){
+        $this->db->insert('order', $clean_order_data);
+        // return saved id
+        $id=$this->db->insert_id();
+        return (isset($id)) ? $id : false;
+    }
     
-    public function index($clean_order_detail){
-        $this->db->insert('order', $clean_order_detail);
+    public function save_order_content($clean_order_detail){
+        $this->db->insert('order_content', $clean_order_detail);
     }
 
     public function deduct_quantity($prd_id, $clean_remain_qty){
@@ -16,10 +23,6 @@ class Billing_model extends CI_Model{
         $this->db->update('product', $clean_remain_qty);
     }
 
-    public function save_order_transport_cost($clean_transport_cost){
-        $this->db->insert('order_shipping_fee', $clean_transport_cost);
-    }
-    
     // public function order_payment_info($clean_order_payment_data){
     //     $this->db->insert('order_payment_tb', $clean_order_payment_data);
     // }

@@ -125,5 +125,22 @@ class R_main_model extends CI_Model{
         }
     }
 
+    public function product_details($product_id){
+        $this->db->where('id', $product_id);
+        $this->db->where('status', 1);
+        $product_data=$this->db->get('product');
+
+        $count_product = $product_data->num_rows();
+
+        if($count_product > 0){
+            foreach($product_data->result() as $product_row){
+                $context[] = $product_row;
+            }
+            return $context;
+        }else{
+            return false;
+        }
+    }
+
 }
 ?>

@@ -18,51 +18,62 @@ class Billing extends CI_Controller{
     }
     
     public function index(){
-        //generate time when retailer place order
-        $order_time=date('Y-m-d H:i:s');
-        //convert order_time to timestamp
-        $order_timestamp=strtotime($order_time);
-        
-        $cartprd=$this->cart->contents();
-        
-        //generate unique order_number
-        $orderNumber=$this->session->userdata('id').time();
-        
-        //update cart before buy
-        foreach($cartprd as $cartItems){
-            $productid=$cartItems['id'];    
-            $prdQty=$cartItems['qty'];
-            
-            //campare ordered quantity with in-stock products
-            $this->db->where('id', $productid);
-            $get_in_stock=$this->db->get('product');
-            foreach($get_in_stock->result() as $in_stock_row){
-                $in_stock_qty=$in_stock_row->quantity;
-                
-                if($in_stock_qty<$prdQty){    
-                    $productQuantity=$in_stock_qty;
-                    $prdrowid=$cartItems['rowid'];    
-                }else{
-                    $productQuantity=$cartItems['qty'];
-                    $prdrowid=$cartItems['rowid'];    
-                }
-                
-                $cartUpdate=array(
-                    'rowid'=>$prdrowid,
-                    'qty'=>$productQuantity
-                );
-                $this->cart->update($cartUpdate);
-            }
-        }
-
-        //get transport fee
-        $transportCost=str_replace(',','',$this->input->post('transport_fee'));
-        
-        //retrive all order from cart save to db
-        //......................................
-        //......................................
-        
         if($cart_prd=$this->cart->contents()){
+
+            //generate time when retailer place order
+            $order_time=date('Y-m-d H:i:s');
+            //convert order_time to timestamp
+            $order_timestamp=strtotime($order_time);
+            
+            $cartprd=$this->cart->contents();
+            
+            //generate unique order_number
+            $orderNumber=$this->session->userdata('id').time();
+
+            //update cart before buy
+            foreach($cartprd as $cartItems){
+                $productid=$cartItems['id'];    
+                $prdQty=$cartItems['qty'];
+                
+                //campare ordered quantity with in-stock products
+                $this->db->where('id', $productid);
+                $get_in_stock=$this->db->get('product');
+                foreach($get_in_stock->result() as $in_stock_row){
+                    $in_stock_qty=$in_stock_row->quantity;
+                    
+                    if($in_stock_qty<$prdQty){    
+                        $productQuantity=$in_stock_qty;
+                        $prdrowid=$cartItems['rowid'];    
+                    }else{
+                        $productQuantity=$cartItems['qty'];
+                        $prdrowid=$cartItems['rowid'];    
+                    }
+                    
+                    $cartUpdate=array(
+                        'rowid'=>$prdrowid,
+                        'qty'=>$productQuantity
+                    );
+                    $this->cart->update($cartUpdate);
+                }
+            }
+
+            //get transport fee
+            $transportCost=str_replace(',','',$this->input->post('transport_fee'));
+
+            // save order
+            $order_data = array(
+                'order_number'=>$orderNumber,
+                'from'=>$this->session->userdata('id'),
+                'transport_fee'=>$transportCost,
+                'date_ordered'=>$order_time,
+            );
+
+            $clean_order_data = $this->security->xss_clean($order_data);
+            $saved_order_id = $this->billingmodel->save_order($clean_order_data);
+                        
+            //retrive all order from cart and save to db
+            //..........................................
+            //..........................................
 
             // get order status
             $this->db->where('name', 'pending');
@@ -71,8 +82,6 @@ class Billing extends CI_Controller{
                 $current_status_id = $status_row->id; 
             }
             
-            // $order_status='pending';
-
             $total_order_price=0;
             
             $seller_id=array();
@@ -83,20 +92,18 @@ class Billing extends CI_Controller{
                 $total_order_price=$total_order_price+$items_prd['subtotal'];
                 
                 $order_detail=array(
-                    'order_number'=>$orderNumber,
-                    'from'=>$this->session->userdata('id'),
+                    'order_id'=>$saved_order_id,
                     'to'=>$items_prd['optional']['eachWholesalerId'],
                     'product_id'=>$items_prd['id'],
                     'quantity'=>$items_prd['qty'],
                     'price'=>$items_prd['subtotal'],
                     'status_id'=>$current_status_id,
-                    'date_ordered'=>$order_time,
                 );
                 
                 //clean data
                 $clean_order_detail=$this->security->xss_clean($order_detail);
                 //pass data to model
-                $this->billingmodel->index($clean_order_detail);
+                $this->billingmodel->save_order_content($clean_order_detail);
                 
                 //deduct ordered quantity from available quantity .start        
                 //.....................................................
@@ -122,16 +129,6 @@ class Billing extends CI_Controller{
                 $seller_id[]=$items_prd['optional']['eachWholesalerId'];
             } //end cart foreach
 
-
-            // save order transport cost
-            $transport_cost = array(
-                'order_id'=>$orderNumber,
-                'fee'=>$transportCost,
-            );
-
-            $clean_transport_cost = $this->security->xss_clean($transport_cost);
-            $this->billingmodel->save_order_transport_cost($clean_transport_cost);
-           
             //tuma sms kwa seller
             
             //remove duplicate of seller id from array
@@ -147,7 +144,7 @@ class Billing extends CI_Controller{
                 $each_saler_id=$filtered_seller_id[$seller_position];
 
                 //send notification sms to wholesaler who receive orders    
-                $sms=array(); 
+                $sms=array();
                 //select data from user details
                 $this->db->where('id', $each_saler_id);
                 $user_info=$this->db->get('user');
@@ -160,18 +157,17 @@ class Billing extends CI_Controller{
                     $last_nine_no=substr($each_wholesaler_no, -9);
                     $userPhoneno='255'.$last_nine_no;
                     
-                    //find number of products contain in the order and total price of each order    
-                    $this->db->where('from', $this->session->userdata('id'));
+                    //find number of products contain in the order and total price of each order
+                    $this->db->where('order_id', $saved_order_id);
                     $this->db->where('to', $each_saler_id);
-                    $this->db->where('date_ordered', $order_time);
-                    $order_products=$this->db->get('order');
+                    $order_products=$this->db->get('order_content');
                     $count_order_products=$order_products->num_rows();
                     $each_order_total_price=0;
                     foreach($order_products->result() as $order_row){
                         $each_prd_price=$order_row->price;
                         $each_order_total_price=$each_order_total_price+$each_prd_price;
                     }
-                    
+
                     //get pharmacy name of retailer
                     $this->db->where('user', $this->session->userdata('id'));
                     $get_retailer_pharmName=$this->db->get('pharmacy');
@@ -193,14 +189,18 @@ class Billing extends CI_Controller{
                     
                     $message_content='Hello '.$userMail.', you have receive a new order consisting of '.$count_order_products.' '.$product_containing.'. Please login to your Pharmlinks Account to check and process it.'.' https://bit.ly/2z8EZuX';
                     
-                    // start send sms to seller start from here
+                    // start send sms to seller from here
 
                     
                 }//end foreach loop
             }//end for loop
+        }else{
+            redirect('cart');
+            exit();
         }
         
-        redirect("billing/thanks/$order_timestamp");
+        $this->cart->destroy();
+        redirect("billing/thanks/$saved_order_id");
     }
     
     public function send_mail(){
@@ -248,58 +248,53 @@ class Billing extends CI_Controller{
         $orderTimestamp=strtotime($orderTime);
         
         //generate unique order_number
-        $order_number=$this->session->userdata('unique_user_id').time();
-        
-        //check payment mode
-        $paymentMode=$this->uri->segment(3);
+        $order_number=$this->session->userdata('id').time();
         
         //get transport fee
-        $transportCost=$this->uri->segment(4);
+        $transportCost=str_replace(',','',$this->input->post('transport_fee'));
         
-        $get_prd_qty=$_REQUEST['qty'];
-        $get_sub_total=$_REQUEST['price'];
-        $get_wholesaler_id=$_REQUEST['s_id'];
-        $get_prd_id=$_REQUEST['p_id'];
+        $get_prd_qty=$this->input->post('product_quantity');
+        $get_sub_total=$this->input->post('subTotalPrice');
+        $get_wholesaler_id=$this->input->post('uniqueWholesalerId');
+        $prd_id=$this->input->post('productid');
         
-        if($paymentMode=='' || $transportCost=='' || $get_prd_qty=='' || $get_sub_total=='' || $get_wholesaler_id=='' || $get_prd_id==''){
-            echo '<h1 style = "color: red;">error in sending order to the seller, please try again!</h1>';
-            exit();
-        }
-        
-        //insert order status depend on the payment method
-        if($paymentMode=='m-pesa'){
-            $order_status='init';
-            $seller_availability=NULL;
-            $date_order_received_to_seller=NULL;
-        }else if($paymentMode=='wallet'){
-            $order_status='pending';
-            $seller_availability='available';
-            $date_order_received_to_seller=$orderTime;
-        }
-        
-        //collect order information
-        $order_detail=array(
+
+        // save order
+        $order_data = array(
             'order_number'=>$order_number,
-            'order_from'=>$this->session->userdata('unique_user_id'),
-            'order_to'=>$get_wholesaler_id,
-            'productid'=>$get_prd_id,
+            'from'=>$this->session->userdata('id'),
+            'transport_fee'=>$transportCost,
+            'date_ordered'=>$orderTime,
+        );
+
+        $clean_order_data = $this->security->xss_clean($order_data);
+        $saved_order_id = $this->billingmodel->save_order($clean_order_data);
+
+        // get order status
+        $this->db->where('name', 'pending');
+        $order_status = $this->db->get('order_status');
+        foreach($order_status->result() as $status_row){
+            $current_status_id = $status_row->id; 
+        }
+
+        $order_detail=array(
+            'order_id'=>$saved_order_id,
+            'to'=>$get_wholesaler_id,
+            'product_id'=>$prd_id,
             'quantity'=>$get_prd_qty,
             'price'=>$get_sub_total,
-            'status'=>$order_status,
-            'date_ordered'=>$orderTime,
-            'date_store_receive'=>$date_order_received_to_seller,
-            'wholesaler_availability'=>$seller_availability
+            'status_id'=>$current_status_id,
         );
         
         //clean data
         $clean_order_detail=$this->security->xss_clean($order_detail);
         //pass data to model
-        $this->billing->index($clean_order_detail);
+        $this->billingmodel->save_order_content($clean_order_detail);
         
         //get available quantity
-        $this->db->where('product_ID', $get_prd_id);
-        $this->db->where('user_id', $get_wholesaler_id);
-        $get_instock=$this->db->get('stocks');
+        $this->db->where('id', $prd_id);
+        $this->db->where('user', $get_wholesaler_id);
+        $get_instock=$this->db->get('product');
         foreach($get_instock->result() as $instock_row){
             $available_instock=$instock_row->quantity;
             
@@ -307,211 +302,63 @@ class Billing extends CI_Controller{
             $remain_prd_stock=array(
                 'quantity'=>$available_instock-$get_prd_qty
             );
-            $this->access_database->deduct_quantity($get_prd_id, $remain_prd_stock);
+            $clean_remain_qty = $this->security->xss_clean($remain_prd_stock);
+            $this->billingmodel->deduct_quantity($prd_id, $clean_remain_qty);
         }
         
-        //total price = order price + transport cost
-        $order_price_and_transport=$get_sub_total+$transportCost;
+        //tuma sms kwa seller kama buyer ameshalipia
         
-        //send payment data to order_payment_tb
-        if($paymentMode=='m-pesa'){
+        //send notification sms to wholesaler who receive orders    
+        $sms=array();
+        //select data from user details
+        $this->db->where('id', $get_wholesaler_id);
+        $user_info=$this->db->get('user');
+        foreach($user_info->result() as $user_info_row){
+            $userUniqueId=$user_info_row->id;
+            $userMail=$user_info_row->email;
+            $each_wholesaler_no=str_replace(str_split('-+() '),'',$user_info_row->phone_number);
             
-            //generate order payment number
-            $payment_number_exist = true;
-            $paymentNumber = 0;
+            //substring all numbers
+            $last_nine_no=substr($each_wholesaler_no, -9);
+            $userPhoneno='255'.$last_nine_no;
             
-            while($payment_number_exist){
-                //generate the new reference number and check if exists
-                $digit=5;
-                $base_no=pow(10, $digit-1);
-                $power_no=pow(10, $digit)-1;
-                $paymentNumber=rand($base_no, $power_no);
-                
-                $this->db->where('order_payment_number', $paymentNumber);
-                $count_payment_number = $this->db->count_all_results('order_payment_tb');
-                if($count_payment_number == 0){
-                    $payment_number_exist = false;
-                }
+            //find number of products contain in the order and total price of each order
+            $this->db->where('order_id', $saved_order_id);
+            $this->db->where('to', $get_wholesaler_id);
+            $order_products=$this->db->get('order_content');
+            $count_order_products=$order_products->num_rows();
+            $each_order_total_price=0;
+            foreach($order_products->result() as $order_row){
+                $each_prd_price=$order_row->price;
+                $each_order_total_price=$each_order_total_price+$each_prd_price;
             }
             
-            $order_payment_data=array(
-                'order_number'=>$order_number,
-                'order_payment_number'=>$paymentNumber,
-                'order_price'=>$get_sub_total,
-                'transport_cost'=>$transportCost,
-                'total_order_price'=>$order_price_and_transport,
-                'amount_paid'=>0,
-                'payment_status'=>0
-            );
-            
-            //clean data
-            $clean_order_payment_data=$this->security->xss_clean($order_payment_data);
-            $this->billing->order_payment_info($clean_order_payment_data);
-        }else if($paymentMode=='wallet'){
-            
-            //deduct amount of money used to pay the order from retailer wallet
-            $user_reference=$this->session->userdata('user_reference_no');
-            $this->db->where('user_reference_number', $user_reference);
-            $wallet_balance=$this->db->get('wallet_tb');
-            foreach($wallet_balance->result() as $balance_row){
-                $user_balance=$balance_row->wallet_balance;
+            //get pharmacy name of each retailer
+            $this->db->where('user', $this->session->userdata('id'));
+            $get_retailer_pharmName=$this->db->get('pharmacy');
+            foreach($get_retailer_pharmName->result() as $retailer_pharm_row){
+                $retailer_pharm_name=$retailer_pharm_row->name;
             }
             
-            //balance remain
-            $remain_wallet_account=$user_balance-$order_price_and_transport;
+            if($count_order_products==1){
+                $different='';
+                $content='contain';
+                $product_containing='product';    
+            }else{
+                $different=' differents ';
+                $content='contains';
+                $product_containing='products';    
+            }
             
-            //update wallet account
-            $remain_balance=array(
-                'wallet_balance'=>$remain_wallet_account
-            );
-            //clean data
-            $clean_remain_balance=$this->security->xss_clean($remain_balance);
+            //structure notification sms
             
-            $this->db->where('user_reference_number', $user_reference);
-            $this->db->update('wallet_tb', $remain_balance);
+            $message_content='Hello '.$userMail.', you have receive a new order consisting of '.$count_order_products.' '.$product_containing.'. Please login to your Pharmlinks Account to check and process it.'.' https://bit.ly/2z8EZuX';
             
-            //store transaction from wallet
-            $transaction_data=array(
-                'user_reference_no'=>$user_reference,
-                'amount'=>$order_price_and_transport,
-                'transaction_status'=>'cash-out'
-            );
-            //clean data
-            $clean_transaction_data=$this->security->xss_clean($transaction_data);
-            $this->db->insert('wallet_transaction_history_tb', $clean_transaction_data);
+            // start send sms to seller from here   
             
-            $order_payment_data=array(
-                'order_number'=>$order_number,
-                'order_price'=>$get_sub_total,
-                'transport_cost'=>$transportCost,
-                'total_order_price'=>$order_price_and_transport,
-                'amount_paid'=>$order_price_and_transport,
-                'payment_status'=>1
-            );
-            
-            //clean data
-            $clean_order_payment_data=$this->security->xss_clean($order_payment_data);
-            
-            $this->billing->order_payment_info($clean_order_payment_data);
-            
-            //tuma sms kwa seller kama buyer ameshalipia
-            
-            //send notification sms to wholesaler who receive orders    
-            $sms=array();
-            //select data from user details
-            $this->db->where('user_ID', $get_wholesaler_id);
-            $user_info=$this->db->get('user_details');
-            foreach($user_info->result() as $user_info_row){
-                $userUniqueId=$user_info_row->user_ID;
-                $userFirstName=$user_info_row->first_name;
-                $each_wholesaler_no=str_replace(str_split('-+() '),'',$user_info_row->phone_no);
-                
-                //substring all numbers
-                $last_nine_no=substr($each_wholesaler_no, -9);
-                $userPhoneno='255'.$last_nine_no;
-                
-                //find number of products contain in the order and total price of each order    
-                $this->db->where('order_from', $this->session->userdata('unique_user_id'));
-                $this->db->where('order_to', $get_wholesaler_id);
-                $this->db->where('date_ordered', $orderTime);
-                $order_products=$this->db->get('orders');
-                $count_order_products=$order_products->num_rows();
-                
-                $each_order_total_price=0;
-                foreach($order_products->result() as $order_row){
-                    $each_prd_price=$order_row->price;
-                    $each_order_total_price=$each_order_total_price+$each_prd_price;
-                }
-                
-                //get pharmacy name of each retailer
-                $this->db->where('user_ID', $this->session->userdata('unique_user_id'));
-                $get_retailer_pharmName=$this->db->get('pharmacies');
-                foreach($get_retailer_pharmName->result() as $retailer_pharm_row){
-                    $retailer_pharm_name=$retailer_pharm_row->name;
-                }
-                
-                if($count_order_products==1){
-                    $different='';
-                    $content='contain';
-                    $product_containing='product';    
-                }else{
-                    $different=' differents ';
-                    $content='contains';
-                    $product_containing='products';    
-                }
-                
-                //structure notification sms
-                
-                //deduct service charges cost from order
-                foreach($this->db->get('order_charges_tb')->result() as $charge_row){
-                    $percentage_deducted=$charge_row->percentage_deducted;
-                }
-                $percentage_charged=$percentage_deducted/100;
-                $money_deducted=$percentage_charged*$each_order_total_price;
-                $final_order_price=$each_order_total_price-$money_deducted;
-                
-                $notification_sms='order from '.$retailer_pharm_name.' of Tsh '.number_format($final_order_price).' contains '.$count_order_products.' '.$different.$product_containing.'.';
-                
-                //send notification to each wholesaler
-                $notify_wholesaler=array(
-                    'user_id'=>$get_wholesaler_id,
-                    'order_number'=>$order_number,
-                    'notification_order'=>'Received new order',
-                    'notification_message'=>$notification_sms,
-                    'date_added'=>$orderTime
-                );
-                //clean data
-                $clean_notify_wholesaler=$this->security->xss_clean($notify_wholesaler);
-                $this->db->insert('notification', $clean_notify_wholesaler);
-                
-                $message_content='Hello '.$userFirstName.', you have receive a new order consisting of '.$count_order_products.' '.$product_containing.'. Please login to your Pharmlinks Account to check and process it.'.' https://bit.ly/2z8EZuX';
-                
-                #############################################################################################
-                ###
-                ###########################                
-                //save sent sms to database
-                ###	NEW API TO SEND SMS
-                
-                $arrContextOptions=array(
-                    "ssl"=>array(
-                        "verify_peer"=>false,
-                        "verify_peer_name"=>false,
-                    ),
-                );    
-                
-                $sms_sent=array( 
-                    'sender_id'=>$this->session->userdata('unique_user_id'),
-                    'receiver_id'=>$get_wholesaler_id,
-                    'messageContent'=>$message_content,
-                    'messagesNumber'=>ceil(strlen($message_content)/160),
-                    'sentDatetime'=>$orderTime
-                ); 
-                
-                //send sms to getway
-                $to = $userPhoneno;
-                $sms = urlencode($message_content);
-                $header='Pharmlinks';
-                
-                $dataz = file_get_contents("https://www.sms.co.tz/api.php?do=sms&username=afeltechnologies&password=AFELSMS123&senderid=$header&dest=$to&msg=$sms", false, stream_context_create($arrContextOptions));
-                //if msg sent to getway...insert data.
-                
-                if($dataz){
-                  $this->billing->save_sent_sms($sms_sent);
-                }
+        }//end of loop
 
-                #############################################################################################
-                ###
-                #####################################     
-                
-            }//end of loop
-            
-        } //wallet payment end
-        
-        if($paymentMode=='m-pesa'){
-            redirect("Billing/pre_order/$orderTimestamp");
-        }else if($paymentMode=='wallet'){
-            redirect("Billing/thanks_for_shopping/$orderTimestamp");
-        }
+        redirect("billing/thanks/$saved_order_id");
         
     }
     

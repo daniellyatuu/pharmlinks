@@ -16,7 +16,7 @@
                     </li>
                 
                     <li>
-                        <a class="<?php if($active=='pharmacies'){echo 'active';}?>" href="<?=base_url('shops');?>" data-toggle="collapse" data-target="#products"><div class="pull-left"><i class="fa fa-medkit mr-20"></i><span class="right-nav-text">Shop Now</span></div><div class="clearfix"></div></a>
+                        <a class="<?php if($active=='pharmacies' or $active == 'product_details'){echo 'active';}?>" href="<?=base_url('shops');?>" data-toggle="collapse" data-target="#products"><div class="pull-left"><i class="fa fa-medkit mr-20"></i><span class="right-nav-text">Shop Now</span></div><div class="clearfix"></div></a>
                     </li>
                 
                     <li>
@@ -40,7 +40,7 @@
                     </li>
 
                     <li>
-                        <a href="" class="<?php if(!empty($leftRtOrders)){echo $leftRtOrders;}?>" data-toggle="collapse" data-target="#app_dr"><div class="pull-left"><i class="ti-package mr-20"></i><span class="right-nav-text">My orders</span></div><div class="pull-right"></div><div class="clearfix"></div></a>
+                        <a href="<?=base_url('r_order');?>" class="<?php if($active=='retailer_order'){echo 'active';}?>" data-toggle="collapse" data-target="#app_dr"><div class="pull-left"><i class="ti-package mr-20"></i><span class="right-nav-text">My orders</span></div><div class="pull-right"></div><div class="clearfix"></div></a>
                     </li>
                 
                     <!-- <li><hr class="light-grey-hr mb-10"/></li>

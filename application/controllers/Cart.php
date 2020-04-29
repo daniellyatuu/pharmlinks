@@ -103,7 +103,7 @@ class Cart extends CI_Controller{
                     <img src="'.base_url('assets/app').'/img/285_files/'.$cart_item['name'].'" alt="product image" width="40" class="zoom_image">
                 </td>
                 <td class="txt-dark">
-                    <a href="'.base_url('r_main/product_info').'/'.$cart_item['id'].'">
+                    <a href="'.base_url('r_main/info').'/'.$cart_item['id'].'">
             ';
             
             $this->db->where('id', $cart_item['id']);

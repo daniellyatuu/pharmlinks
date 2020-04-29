@@ -15,12 +15,18 @@
 	<link rel="shortcut icon" href="favicon.ico">
 	<link rel="icon" href="favicon.ico" type="image/x-icon">
 	
+	<?php
+	/*
+	?>
 	<!-- Morris Charts CSS -->
-    <link href="<?=base_url('assets/app');?>/vendors/bower_components/morris.js/morris.css" rel="stylesheet" type="text/css"/>
+    <link href="<?//=base_url('assets/app');?>/vendors/bower_components/morris.js/morris.css" rel="stylesheet" type="text/css"/>
 	
 	<!-- Data table CSS -->
 	<link href="<?//=base_url('assets/app');?>/vendors/bower_components/datatables/media/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
 	
+	<?php
+	}*/
+	?>
 	<link href="<?=base_url('assets/app');?>/vendors/bower_components/jquery-toast-plugin/dist/jquery.toast.min.css" rel="stylesheet" type="text/css">
 	
 	<!-- bootstrap-select CSS -->
@@ -55,6 +61,13 @@
 			pointer-events: none;
 		}
 	</style>
+	<?php
+		}
+
+		if($active == 'product_details'){
+	?>
+	<!-- bootstrap-touchspin CSS -->
+	<link href="<?=base_url('assets/app');?>/vendors/bower_components/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css" rel="stylesheet" type="text/css"/>
 	<?php
 		}
 	}

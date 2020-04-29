@@ -4,7 +4,7 @@
         <div class="nav-header pull-left">
             <div class="logo-wrap">
                 
-                <a href="<?=base_url('RT_main/dashboard');?>">
+                <a href="javascript:void(0);" style = "cursor: default;">
                     <img class="brand-img hidden-xs" src="<?php echo base_url('assets/app');?>/dist/img/pl_logo.png" alt="brand"/>
                     <span class="brand-text">Pharmlinks</span>
                 </a>

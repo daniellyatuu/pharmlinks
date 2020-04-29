@@ -29,7 +29,7 @@
                                     <a href="<?=base_url('shops');?>" class="btn btn-default btn-block">continue shopping</a>
                                 </div>
                                 <div class="col-md-6">
-                                    <a href="<?//=base_url('RT_contents/view_my_order');?>/<?=$this->uri->segment(3);?>" class="btn btn-default btn-block">check my order</a>
+                                    <a href="<?=base_url('r_order/invoice');?>/<?=$this->uri->segment(3);?>" class="btn btn-default btn-block">check my order</a>
                                 </div>
                             </div>
                             
@@ -38,16 +38,3 @@
                 </div>
                
 			</div>
-			
-			<!-- Footer -->
-			<footer class="footer container-fluid pl-30 pr-30">
-				<div class="row">
-					<div class="col-sm-12">
-						<p class="text-center"><?=date('Y');?> &copy; PharmLink.</p>
-					</div>
-				</div>
-			</footer>
-			<!-- /Footer -->
-			
-        </div>
-        <!-- /Main Content -->
