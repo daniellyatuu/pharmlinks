@@ -56,14 +56,14 @@
                     <!-- side menu for wholesaler only .start -->
                     
                     <li>
-                        <a class="<?php if($active=='seller_detail'){echo 'active';}?>" href="<?=base_url('w_main');?>" data-toggle="collapse" data-target="#dashboard_dr"><div class="pull-left"><i class="zmdi zmdi-landscape mr-20"></i><span class="right-nav-text">Dashboard</span></div><div class="clearfix"></div></a>
+                        <a class="<?php if($active=='seller_dashboard'){echo 'active';}?>" href="<?=base_url('w_main');?>" data-toggle="collapse" data-target="#dashboard_dr"><div class="pull-left"><i class="zmdi zmdi-landscape mr-20"></i><span class="right-nav-text">Dashboard</span></div><div class="clearfix"></div></a>
                     </li>
                     
                     <li>
-                        <a class="<?php if($active=='add_product' or $active=='view_products'){echo 'active';}?>" href="javascript:void(0);" data-toggle="collapse" data-target="#app_dr"><div class="pull-left"><i class="fa fa-medkit mr-20"></i><span class="right-nav-text">products </span></div><div class="pull-right"><i class="zmdi zmdi-caret-down"></i></div><div class="clearfix"></div></a>
+                        <a class="<?php if($active=='add_product' || $active=='view_products'){echo 'active';}?>" href="javascript:void(0);" data-toggle="collapse" data-target="#app_dr"><div class="pull-left"><i class="fa fa-medkit mr-20"></i><span class="right-nav-text">products </span></div><div class="pull-right"><i class="zmdi zmdi-caret-down"></i></div><div class="clearfix"></div></a>
                         <ul id="app_dr" class="collapse collapse-level-1">
                             <li>
-                                <a href="<?=base_url('w_main/add');?>" class="<?php if($active=='add_product'){echo 'active-page';}?>">Add product</a>
+                                <a href="<?=base_url('w_main/add');?>" class="<?php if($active=='add_product' || $active = 'edit_product'){echo 'active-page';}?>">Add product</a>
                             </li>
                             <li>
                                 <a href="<?=base_url('w_main/products');?>" class = "<?php if($active=='view_products'){echo 'active-page';}?>">products list</a>

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('no direct script access allowed');
 
-class W_main extends CI_Controller{
+class W_product extends CI_Controller{
     
     function __construct(){
         parent::__construct();
@@ -14,39 +14,37 @@ class W_main extends CI_Controller{
             redirect('user');
         }
 
-        $this->load->library("pagination");
-        
         // load model
         $this->load->model('Admin_model', 'adminmodel');
-        $this->load->model('W_main_model', 'w_mainmodel');
-    }
-    
-    public function index(){
-        //auto cancel order
-        // $this->billing->auto_cancel_order();
-        
-        // $left_rt_dash['leftRtDash']='active';
-        // $left_rt_dash['title']='Retailer Dashboard';
-        $context['title']='wholesaler';
-        $context['active']='seller_dashboard';
-        $this->load->view('includes/header/Header', $context);
-        $this->load->view('navbar/Base');
-        $this->load->view('wholesaler/Home.php');
-        $this->load->view('includes/footer/Footer');
+        $this->load->model('W_product_model', 'wproductmodel');
     }
 
-    public function add(){
+    public function index(){
+        $id = $this->uri->segment(3);
+
         $context['active']='add_product';
-        $context['title']='add product';
+        $context['title']='edit product';
         $context['category']=$this->adminmodel->get_category();
         $context['selling_package']=$this->adminmodel->get_selling_package();
+        $context['product']=$this->wproductmodel->index($id);
         $this->load->view('includes/header/Header', $context);
         $this->load->view('navbar/Base');
-        $this->load->view('wholesaler/Add_product.php');
+        $this->load->view('wholesaler/Edit_product.php');
         $this->load->view('includes/footer/Footer');
     }
 
-    public function save_product(){
+    public function remove_product_image(){
+        $id = $this->input->post('id');
+
+        $this->db->where('id', $id);
+        $result = $this->db->delete('product_image');
+        $data = array();
+        $data['id']=$id;
+        echo json_encode($data);
+    }
+
+    public function update(){
+        $id = $this->input->post('productid');
         $product_name = $this->input->post('product_name');
         $generic_name = $this->input->post('generic_name');
         $category = $this->input->post('category');
@@ -81,7 +79,6 @@ class W_main extends CI_Controller{
 
         // product details
         $product_data=array(
-            'user'=>$this->session->userdata('id'),
             'brand_name'=>$product_name,
             'generic_name'=>$generic_name,
             'category'=>$category,
@@ -97,13 +94,13 @@ class W_main extends CI_Controller{
         // clean data
         $clean_product_data = $this->security->xss_clean($product_data);
         
-        $saved_object=$this->w_mainmodel->save_product($clean_product_data);
+        $this->wproductmodel->update_product($id, $clean_product_data);
         
         //check if user browse image
         if(empty(implode($_FILES['files']['name']))){
 
-            $this->session->set_flashdata('feedback', 'product was added successfully');
-            redirect('w_main/add');
+            $this->session->set_flashdata('feedback', 'product was updated successfully');
+            redirect('w_main/products');
             exit();
         }
         
@@ -357,7 +354,7 @@ class W_main extends CI_Controller{
                     $saved_img=$clean_uploaded_img[$img_file];
                     
                     $hold_img_data=array(
-                        'product'=>$saved_object,
+                        'product'=>$id,
                         'filename'=>$saved_img
                     );
                     //clean data
@@ -367,91 +364,9 @@ class W_main extends CI_Controller{
                 
             }
             
-            $this->session->set_flashdata('feedback', 'product was added successfully');
-            redirect("w_main/add?all=$all_img&pass=$uploaded_img&ext_error=$ext_error_img&size_error=$size_error");
+            $this->session->set_flashdata('feedback', 'product was updated successfully');
+            redirect("w_main/products");
         }
-    }
-
-    public function products(){
-
-        $sortby = 30;
-        if($_GET){
-            $sort = $_GET['sort'];
-            $sortby = $sort;
-        }
-
-        $config = array();
-        $config["base_url"] = base_url() . "w_main/products";
-        $config["total_rows"] = $this->w_mainmodel->count_products();
-        $config["per_page"] = $sortby;
-        $config["uri_segment"] = 3;
-
-        // CodeIgniter pagination customization
-        $config['attributes'] = array('class' => 'page-link');
-        $config['full_tag_open'] = "<ul class='pagination' style='float:right;'>";
-        $config['full_tag_close'] = '</ul>';
-        $config['num_tag_open'] = '<li class="page-item">';
-        $config['num_tag_close'] = '</li>';
-        $config['cur_tag_open'] = '<li class="page-item active"><a href="javascript:void(0);" class="page-link">';
-        $config['cur_tag_close'] = '</a></li>';
-        $config['first_link'] = '';
-        $config['last_link'] = '';
-        $config['next_link'] = '<span aria-hidden="true"><i class="fa fa-chevron-right"></i></span>';
-        $config['next_tag_open'] = '<li class="page-item">';
-        $config['next_tag_close'] = '</li>';
-        $config['prev_link'] = '<span aria-hidden="true"><i class="fa fa-chevron-left"></i></span>';
-        $config['prev_tag_open'] = '<li class="page-item">';
-        $config['prev_tag_close'] = '</li>';
-
-        $this->pagination->initialize($config);
-
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-
-        $to = $page + $this->pagination->per_page;
-        $count = $config['total_rows'];
-        
-        if ($to > $count) {
-            $to = $count;
-        }
-        
-        $context['active']='view_products';
-        $context['title']='products';
-        $context["products"] = $this->w_mainmodel->get_products($config["per_page"], $page);
-        $context["links"] = $this->pagination->create_links();
-        $context["categories"] = $this->adminmodel->get_category();
-        $context['pagermessage'] = 'Showing '.($page+1) . ' to ' . $to . ' from ' . $count . ' results';
-
-        $this->load->view('includes/header/Header', $context);
-        $this->load->view('navbar/Base');
-        $this->load->view('wholesaler/Products.php');
-        $this->load->view('includes/footer/Footer');
-    }
-
-    public function product_details(){
-        $product_id = $this->input->post('id');
-        
-        $this->db->where('id', $product_id);
-        $this->db->where('user', $this->session->userdata('id'));
-        $get_product = $this->db->get('product');
-
-        foreach($get_product->result() as $product_row){
-            $brand_name = $product_row->brand_name;
-        }
-
-        $data = array();
-        $data['brand_name']=$brand_name;
-        $data['id']='12';
-        echo json_encode($data);
-    }
-
-    public function delete_product(){
-        $product_id = $this->input->post('prd_id');
-
-        $result = $this->w_mainmodel->delete_product($product_id);
-        if(!empty($result)){
-            $this->session->set_flashdata('feedback', 'product was deleted successfully');
-        }
-        redirect('w_main/products');
     }
 
 }

@@ -157,7 +157,7 @@ class User_model extends CI_Model{
                         $in_stock=$prd_info_row->quantity;
                         $prd_status=$prd_info_row->status;
                         
-                        if($prd_status=='deleted'){
+                        if($prd_status==0){
                             $productQuantity=0;
                             $prdrowid=$cartitems['rowid'];
                         }else{

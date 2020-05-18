@@ -39,10 +39,10 @@
                             <div class="row">
                                 <div class="col-md-2" style="margin: 5px 0;">
                                     <select class="form-control" name="sort">
-                                    <option value="20" <?php if($sort==20){echo 'selected';}?>>20</option>
-                                    <option value="30" <?php if($sort==30){echo 'selected';}?>>30</option>
-                                    <option value="40" <?php if($sort==40){echo 'selected';}?>>40</option>
-                                    <option value="50" <?php if($sort==50){echo 'selected';}?>>50</option>
+                                        <option value="30" <?php if($sort==30){echo 'selected';}?>>30</option>
+                                        <option value="42" <?php if($sort==42){echo 'selected';}?>>42</option>
+                                        <option value="54" <?php if($sort==54){echo 'selected';}?>>54</option>
+                                        <option value="66" <?php if($sort==66){echo 'selected';}?>>66</option>
                                     </select>
                                 </div>
                                 <div class="col-md-4" style="margin: 5px 0;">
@@ -233,7 +233,7 @@
             <!-- product ./end -->
 
         </div>
-        <?//=$links;?>
+        <?=$links;?>
         
         <!--confirm modal .start-->
         <form method="post" action="<?=base_url('w_main/delete_product');?>">

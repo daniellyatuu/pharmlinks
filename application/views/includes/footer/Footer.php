@@ -40,6 +40,50 @@
     <?php
         }
 
+        if($active == 'add_product'){
+    ?>
+    <script>
+    $(document).ready(function(){
+        $('.remove_img_btn').click(function(){
+            $imageid = $(this).attr('image_id');
+            $image_file = $(this).attr('file_name');
+            $image_url = '<?=base_url('assets/app');?>/img/900_1000_files/'+$image_file;
+            $('.preview_image').attr('src', $image_url);
+            $('.img_id').val($imageid);
+            $('.delete_img_btn').attr('value', 'Confirm');
+            $('.delete_img_btn').attr('disabled', false);
+            $('.delete_image').modal('show');
+        });
+
+        $('.delete_img_btn').click(function(){
+            var id_to_rm = $('.img_id').val();
+
+            $(this).attr('value', 'please wait..');
+            $(this).attr('disabled', true);
+            
+            $.ajax({
+                method: "POST",
+                url: "<?=base_url();?>/w_product/remove_product_image",
+                cache: false,
+                dataType: "json",
+                data: {
+                    id: id_to_rm,
+                },
+                success: function(result){
+                    $('.img'+result.id).hide();
+                    $('.delete_image').modal('hide');
+                },
+                error: function(){
+                    alert('error in deleting image');
+                }
+            });
+        });
+        
+    });
+    </script>
+    <?php
+        }
+        
         if($active == 'view_products'){
     ?>
 

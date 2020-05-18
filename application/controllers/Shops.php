@@ -32,7 +32,7 @@ class Shops extends CI_Controller{
 
     public function all(){
 
-        $sortby = 20;
+        $sortby = 30;
         if($_GET){
             $sort = $_GET['sort'];
             $sortby = $sort;
@@ -96,7 +96,7 @@ class Shops extends CI_Controller{
             redirect('shops');
         }
         
-        $sortby = 20;
+        $sortby = 30;
         if($_GET){
             $sort = $_GET['sort'];
             $sortby = $sort;

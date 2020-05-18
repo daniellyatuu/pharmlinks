@@ -20,12 +20,7 @@ class Cart extends CI_Controller{
     public function index(){
         $context['active']='cart_index';
         $context['title']='cart';
-        if(!$this->cart->contents()){
-            $this->load->view('includes/header/Header', $context);
-            $this->load->view('navbar/Base');
-            $this->load->view('retailer/Cart');
-            $this->load->view('includes/footer/Footer');
-        }else{
+        if($this->cart->contents()){
             $cartUpdate=$this->cart->contents();
             foreach($cartUpdate as $cartItems){
                 $productid=$cartItems['id'];
@@ -37,12 +32,18 @@ class Cart extends CI_Controller{
                 $get_in_stock=$this->db->get('product');
                 foreach($get_in_stock->result() as $in_stock_row){
                     $in_stock_qty=$in_stock_row->quantity;
-                    
+                    $prd_status=$in_stock_row->status;
+
                     if($in_stock_qty<$prdQty){
                         $productQuantity=$in_stock_qty;
                         $prdrowid=$cartItems['rowid'];
                     }else{
                         $productQuantity=$cartItems['qty'];
+                        $prdrowid=$cartItems['rowid'];
+                    }
+
+                    if($prd_status==0){
+                        $productQuantity=0;
                         $prdrowid=$cartItems['rowid'];
                     }
                     
@@ -54,12 +55,11 @@ class Cart extends CI_Controller{
                     $this->cart->update($cartUpdate);
                 }
             }
-            
-            $this->load->view('includes/header/Header', $context);
-            $this->load->view('navbar/Base');
-            $this->load->view('retailer/Cart');
-            $this->load->view('includes/footer/Footer');
         }
+        $this->load->view('includes/header/Header', $context);
+        $this->load->view('navbar/Base');
+        $this->load->view('retailer/Cart');
+        $this->load->view('includes/footer/Footer');
     }
     
     public function view_cart(){

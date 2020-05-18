@@ -49,10 +49,10 @@
                             <div class="row">
                                 <div class="col-md-2" style="margin: 5px 0;">
                                     <select class="form-control" name="sort">
-                                    <option value="20" <?php if($sort==20){echo 'selected';}?>>20</option>
                                     <option value="30" <?php if($sort==30){echo 'selected';}?>>30</option>
-                                    <option value="40" <?php if($sort==40){echo 'selected';}?>>40</option>
-                                    <option value="50" <?php if($sort==50){echo 'selected';}?>>50</option>
+                                    <option value="42" <?php if($sort==42){echo 'selected';}?>>42</option>
+                                    <option value="54" <?php if($sort==54){echo 'selected';}?>>54</option>
+                                    <option value="66" <?php if($sort==66){echo 'selected';}?>>66</option>
                                     </select>
                                 </div>
                                 <div class="col-md-4" style="margin: 5px 0;">
@@ -115,7 +115,7 @@
                             <article class="col-item">
                                 <div class="photo">
                                     <div class="options">
-                                        <a href="<?//=base_url('WL_main/edit_my_product');?>/<?//=$user_available_products->product_ID;?>" class="font-18 mr-10 pull-left"><i class="zmdi zmdi-edit"></i></a>
+                                        <a href="<?=base_url('w_product/index');?>/<?=$product->id;?>" class="font-18 mr-10 pull-left"><i class="zmdi zmdi-edit"></i></a>
                                         
                                         <a href="javascript:void(0);" class="font-18 pull-left btn-xs delete_btn" product_id = '<?=$product->id;?>'>
                                             <i class="zmdi zmdi-close"></i>
@@ -153,10 +153,10 @@
                                         if($discount>0){
                                         ?>
                                         <div class="col-md-12">
-                                            <span style="float: left; text-decoration:line-through;">Tsh <?=$product->price;?></span>
+                                            <span style="float: left; text-decoration:line-through;">Tsh <?=number_format($product->price);?></span>
                                         </div>
                                         <div class="col-md-12">
-                                            <span class="head-font block text-warning font-16">Tsh <?=$discount;?></span>
+                                            <span class="head-font block text-warning font-16">Tsh <?=number_format($discount);?></span>
                                         </div>
                                         <?php
                                         }else{
@@ -165,7 +165,7 @@
                                             <span style="float: left; text-decoration:line-through; visibility:hidden;">discount</span>
                                         </div>
                                         <div class="col-md-12">
-                                            <span class="head-font block text-warning font-16">Tsh <?=$product->price;?></span>
+                                            <span class="head-font block text-warning font-16">Tsh <?=number_format($product->price);?></span>
                                         </div>
                                         <?php
                                         }

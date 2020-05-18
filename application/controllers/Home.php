@@ -9,9 +9,9 @@ class Home extends CI_Controller{
     
     public function index(){
         $context['title']='Pharmlinks';
-        $this->load->view('includes/header/home_header.php', $context);
+        $this->load->view('includes/header/Home_header.php', $context);
         $this->load->view('home/home.php');
-        $this->load->view('includes/footer/home_footer.php');
+        $this->load->view('includes/footer/Home_footer.php');
     }
 }
 ?>
