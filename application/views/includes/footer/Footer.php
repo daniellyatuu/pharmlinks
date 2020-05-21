@@ -605,6 +605,51 @@
 
     <?php
         }
+
+        if($active == 'w_invoice'){
+    ?>
+    <script>
+        $(document).ready(function(){
+            $('.pay_procedure').click(function(){
+                var ctrl_text = $(this).find('a').attr('action');
+                
+                if(ctrl_text=='view'){
+                    $(this).find('a').attr('action', 'hide');
+                    $(this).find('a').children('span').html('CLICK TO HIDE PAYMENT METHOD');
+                    $(this).find('a').children('i').removeClass('ti-angle-down').addClass('ti-angle-up');
+                    $('.main_procedure').slideDown('fast');
+                }else{
+                    $(this).find('a').attr('action', 'view');
+                    $(this).find('a').children('span').html('CLICK TO VIEW PAYMENT METHOD');
+                    $(this).find('a').children('i').removeClass('ti-angle-up').addClass('ti-angle-down');
+                    $('.main_procedure').slideUp('fast');
+                }
+            });
+
+            <?php
+            if($this->session->flashdata()){
+            ?>
+            $(document).ready(function(){
+                $(this).delay(1200).queue(function(){
+                    $.toast({
+                        heading: '<?=$this->session->userdata('feedback');?>',
+                        text: 'start packing the drugs',
+                        position: 'top-left',
+                        loaderBg:'#878787',
+                        hideAfter: 4000,
+                        stack: 6
+                    });
+                });
+            });
+            <?php
+            }
+            ?>
+
+        });
+    </script>
+
+    <?php
+        }
     }
     ?>
 

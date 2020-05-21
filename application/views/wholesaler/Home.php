@@ -78,7 +78,18 @@
                                         <div class="col-xs-6 text-center pl-0 pr-0 data-wrap-left">
                                             <span class="txt-light block counter">
                                                 <span class="counter-anim"><!--  -->
-                                                    343
+                                                    <?php
+                                                    $this->db->where('to', $this->session->userdata('id'));
+        
+                                                    $this->db->group_by('order_id');
+                                                    $this->db->group_by('to');
+                                                    $this->db->order_by('order_id', 'desc');
+                                                    $get_order_from_retailer=$this->db->get('order_content');
+                                            
+                                                    // count received order
+                                                    $count_order = $get_order_from_retailer->num_rows();
+                                                    echo $count_order;
+                                                    ?>
                                                 </span>
                                             </span>
                                             <span class="weight-500 uppercase-font txt-light block">Orders</span>

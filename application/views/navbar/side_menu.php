@@ -63,7 +63,7 @@
                         <a class="<?php if($active=='add_product' || $active=='view_products'){echo 'active';}?>" href="javascript:void(0);" data-toggle="collapse" data-target="#app_dr"><div class="pull-left"><i class="fa fa-medkit mr-20"></i><span class="right-nav-text">products </span></div><div class="pull-right"><i class="zmdi zmdi-caret-down"></i></div><div class="clearfix"></div></a>
                         <ul id="app_dr" class="collapse collapse-level-1">
                             <li>
-                                <a href="<?=base_url('w_main/add');?>" class="<?php if($active=='add_product' || $active = 'edit_product'){echo 'active-page';}?>">Add product</a>
+                                <a href="<?=base_url('w_main/add');?>" class="<?php if($active=='add_product'){echo 'active-page';}?>">Add product</a>
                             </li>
                             <li>
                                 <a href="<?=base_url('w_main/products');?>" class = "<?php if($active=='view_products'){echo 'active-page';}?>">products list</a>
@@ -72,13 +72,9 @@
                     </li>
             
                     <li>
-                        <a href="<?//=base_url('WL_main/received_order');?>" class="" data-toggle="collapse" data-target="#pages_dr"><div class="pull-left"><i class="ti-package mr-20"></i><span class="right-nav-text">Orders</span></div><div class="clearfix"></div></a>
+                        <a class="<?php if($active=='w_invoice'){echo 'active';}?>" href="<?=base_url('w_order/invoice');?>" ><div class="pull-left"><i class="ti-package mr-20"></i><span class="right-nav-text">Orders</span></div><div class="clearfix"></div></a>
                     </li>
                     
-                    <!-- <li>
-                        <a href="javascript:void(0);" class="<?php// if(!empty($viewDailySales)){echo 'active';}?>" data-toggle="collapse" data-target="#wholesaler_sales"><div class="pull-left"><i class="fa fa-plus-square mr-20"></i><span class="right-nav-text">sales</span></div><div class="pull-right"></div><div class="clearfix"></div></a>
-                    </li> -->
-
                     <!-- side menu for wholesaler only ./end -->
 
                 <?php

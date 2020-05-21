@@ -112,11 +112,11 @@
                                     <?php
                                     if($count_img == 0){
                                     ?>
-                                    <a href="javascript:void(0);" style="cursor:default;"> <img src="<?=base_url('assets/app');?>/img/original_files/sample.jpg" class="img-responsive" alt="<?$product->brand_name;?>" /> </a>
+                                    <a href="javascript:void(0);" style="cursor:default;"> <img src="<?=base_url('assets/app');?>/img/original_files/sample.jpg" class="img-responsive" alt="<?=$product->brand_name;?>" /> </a>
                                     <?php
                                     }else{
                                     ?>
-                                    <a href="javascript:void(0);" style="cursor:default;"> <img src="<?=base_url('assets/app');?>/img/285_files/<?=$prd_image;?>" class="img-responsive" alt="Product Image" /> </a>
+                                    <a href="javascript:void(0);" style="cursor:default;"> <img src="<?=base_url('assets/app');?>/img/285_files/<?=$prd_image;?>" class="img-responsive" alt="<?=$product->brand_name;?>" /> </a>
                                     <?php
                                     }
                                     ?>

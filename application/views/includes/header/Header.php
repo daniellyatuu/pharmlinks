@@ -41,7 +41,7 @@
 	<?php
 		}
 
-		if($active == 'cart_index'){
+		if($active == 'cart_index' || $active='w_invoice'){
 	?>
 	<style>
 		.zoom_image{

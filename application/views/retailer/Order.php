@@ -4,24 +4,6 @@
 				<!-- Title -->
 				<div class="row heading-bg hide_on_print">
 					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                        <?php
-                        // $retailer_id=$this->session->userdata('unique_user_id');
-                        
-                        // //check balance
-                        // $this->db->where('user_reference_number', $this->session->userdata('user_reference_no'));
-                        // $get_wallet_data=$this->db->get('wallet_tb');
-                        // $count_wallet_data=$get_wallet_data->num_rows();
-                        
-                        // if($count_wallet_data==1){
-                        //     foreach($get_wallet_data->result() as $wallet_row_data){
-                        //         $customer_balance=$wallet_row_data->wallet_balance;
-                        //     }
-                        // }else{
-                        //     $customer_balance=0;
-                        // }
-                        
-                        // if($view_all_orders=='all'){
-                        ?>
                         
 					</div>
 					<!-- Breadcrumb -->
