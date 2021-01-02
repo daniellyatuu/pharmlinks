@@ -171,7 +171,7 @@ class User extends CI_Controller{
             // wrong account flash message
             $this->session->set_flashdata('error','email already exist! Change email.');
             redirect('user/register');
-        }   
+        }
     }
 
     public function error_404(){
@@ -209,7 +209,7 @@ class User extends CI_Controller{
     }
 
     public function logout_msg(){
-        $this->session->set_flashdata('logout','email already exist! Change email.');
+        $this->session->set_flashdata('logout','logout successfully.');
         redirect('user');
     }
 }

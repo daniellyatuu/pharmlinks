@@ -140,8 +140,8 @@
                                         <!--/span-->
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="control-label mb-10">Selling package <abbr style="color: red;" title="required">*</abbr></label>
-                                                <select class="form-control" name="selling_package" data-error="Please select a selling package of your product."  tabindex="1" required>
+                                                <label class="control-label mb-10">Selling package</label>
+                                                <select class="form-control" name="selling_package" data-error="Please select a selling package of your product."  tabindex="1">
                                                     <option value="" style="display: none;" selected>Choose..</option>
                                                     <?php
                                                     foreach($selling_package as $package_row){

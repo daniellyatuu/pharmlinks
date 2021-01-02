@@ -62,9 +62,9 @@
 												<li>
 													<a href="#service">Our offer</a>
 												</li>
-												<li>
+												<!-- <li>
 													<a href="#gallery">Team</a>
-												</li>
+												</li> -->
 					                           
 												<!--<li>
 													<a href="#blog">blog</a>
@@ -585,6 +585,9 @@
 		<!--Testimonial End-->
 
 		<!--Team-->
+		<?php
+		/*
+		?>
 		<section id="gallery" class="padding-120 ptb-xs-40 position_rel gray_bg">
 			<div class="container">
 				<div class="row text-center pb-60 pb-xs-30">
@@ -735,6 +738,9 @@
 
 			
 		</section>
+		<?php
+		*/
+		?>
 		<!--Team End-->
 
 		<!--Blog-->

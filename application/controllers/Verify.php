@@ -23,7 +23,7 @@ class Verify extends CI_Controller{
     }
 
     public function update(){
-        
+
         $new_phone_no=str_replace(str_split('-+() '),'', $this->input->post('phone_number'));
         
         //update phone number
@@ -75,8 +75,81 @@ class Verify extends CI_Controller{
 
         ########################################
         # start send sms from here #############
-        ########################################
+		########################################
+		
+
+		$sms_array = array();
+        $sms_array[] = array(
+            'from'=>'Pharmlinks',
+            'to'=>$userPhoneno,
+            'text'=>$verification_sms,
+		);
+		
+		// print_r($sms_array);
+		// exit();
+        
+        $data = array(
+            'method'=>'AFEL_SEND_SMS',
+            'api_key'=>'ZGFuaWVsbHlhdHV1QGdtYWlsLmNvbTpONjJweGc=',
+            'body'=>$sms_array,
+        );
+        
+        $ch = curl_init('https://sms.afel.co.tz/api');
+        curl_setopt_array(
+            $ch, array(
+                CURLOPT_POST => TRUE,
+                CURLOPT_RETURNTRANSFER => TRUE,
+                CURLOPT_SSL_VERIFYPEER => FALSE,
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                ),
+                CURLOPT_POSTFIELDS => json_encode($data)
+            )
+        );
+        
+        $responseData = curl_exec($ch);
+        if (curl_error($ch)) {
+            echo 'not working!:' . curl_error($ch);
+        }else{
+            echo $responseData;
+		}
+
         redirect('verify/code');
+	}
+	
+	public function testing_send_sms(){
+        // $sms_array = array();
+        // $sms_array[] = array(
+        //     'from'=>'Pharmlinks',
+        //     'to'=>'255653900085',
+        //     'text'=>'This is test message',
+        // );
+        
+        // $data = array(
+        //     'method'=>'AFEL_SEND_SMS',
+        //     'api_key'=>'ZGFuaWVsbHlhdHV1QGdtYWlsLmNvbTpONjJweGc=',
+        //     'body'=>$sms_array,
+        // );
+        
+        // $ch = curl_init('https://sms.afel.co.tz/api');
+        // curl_setopt_array(
+        //     $ch, array(
+        //         CURLOPT_POST => TRUE,
+        //         CURLOPT_RETURNTRANSFER => TRUE,
+        //         CURLOPT_SSL_VERIFYPEER => FALSE,
+        //         CURLOPT_HTTPHEADER => array(
+        //             'Content-Type: application/json'
+        //         ),
+        //         CURLOPT_POSTFIELDS => json_encode($data)
+        //     )
+        // );
+        
+        // $responseData = curl_exec($ch);
+        // if (curl_error($ch)) {
+        //     echo 'not working!:' . curl_error($ch);
+        // }else{
+        //     echo $responseData;
+		// }
     }
 
     public function code(){

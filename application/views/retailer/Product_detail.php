@@ -39,12 +39,14 @@
                     $product_category=$category_row->name;
                 }
 
-                // get selling package
-                $this->db->where('id', $selling_package_id);
-                $selling_package_data=$this->db->get('selling_package');
-                foreach($selling_package_data->result() as $package_row){
-                    $product_selling_package=$package_row->name;
-                }
+				if($selling_package_id != 0){
+					// get selling package
+					$this->db->where('id', $selling_package_id);
+					$selling_package_data=$this->db->get('selling_package');
+					foreach($selling_package_data->result() as $package_row){
+						$product_selling_package=$package_row->name;
+					}
+				}
 
                 // get product image(s)
                 $product_id = $this->uri->segment(3);
@@ -133,9 +135,16 @@
                                                     }
                                                 ?>
 
-                                                <p class="mb-50"><strong style="color: black;">Selling packaging:</strong> <span style="font-weight: bold;"><?=$product_selling_package;?></span><br/>
+                                                <p class="mb-50">
+												<?php
+												if($selling_package_id != 0){
+												?>
+												<strong style="color: black;">Selling packaging:</strong>
+												 <span style="font-weight: bold;"><?=$product_selling_package;?></span>
+												 <br/>
                                                     <!--get manufacturing company of a product-->
                                                     <?php
+												}
                                                     if(!empty($industry) && !empty($country)){
                                                     ?>
 
