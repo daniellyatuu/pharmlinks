@@ -653,6 +653,26 @@
     }
     ?>
 
+	 <!--my script-->
+	 <?php
+        if(isset($_REQUEST['profile_updated'])){
+    ?>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(this).delay(1200).queue(function(){
+                $.toast({
+                    heading: 'Profile updated successfully',
+                    position: 'bottom-right',
+                    loaderBg:'#878787',
+                    hideAfter: 4000,
+                    stack: 6
+                });
+            });
+            
+        });
+    </script>
+    <?php } ?>
+
 </body>
 
 </html>

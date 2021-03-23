@@ -118,38 +118,38 @@ class Verify extends CI_Controller{
 	}
 	
 	public function testing_send_sms(){
-        // $sms_array = array();
-        // $sms_array[] = array(
-        //     'from'=>'Pharmlinks',
-        //     'to'=>'255653900085',
-        //     'text'=>'This is test message',
-        // );
+        $sms_array = array();
+        $sms_array[] = array(
+            'from'=>'Pharmlinks',
+            'to'=>'255653900085',
+            'text'=>'This is test message',
+        );
         
-        // $data = array(
-        //     'method'=>'AFEL_SEND_SMS',
-        //     'api_key'=>'ZGFuaWVsbHlhdHV1QGdtYWlsLmNvbTpONjJweGc=',
-        //     'body'=>$sms_array,
-        // );
+        $data = array(
+            'method'=>'AFEL_SEND_SMS',
+            'api_key'=>'ZGFuaWVsbHlhdHV1QGdtYWlsLmNvbTpONjJweGc=',
+            'body'=>$sms_array,
+        );
         
-        // $ch = curl_init('https://sms.afel.co.tz/api');
-        // curl_setopt_array(
-        //     $ch, array(
-        //         CURLOPT_POST => TRUE,
-        //         CURLOPT_RETURNTRANSFER => TRUE,
-        //         CURLOPT_SSL_VERIFYPEER => FALSE,
-        //         CURLOPT_HTTPHEADER => array(
-        //             'Content-Type: application/json'
-        //         ),
-        //         CURLOPT_POSTFIELDS => json_encode($data)
-        //     )
-        // );
+        $ch = curl_init('https://sms.afel.co.tz/api');
+        curl_setopt_array(
+            $ch, array(
+                CURLOPT_POST => TRUE,
+                CURLOPT_RETURNTRANSFER => TRUE,
+                CURLOPT_SSL_VERIFYPEER => FALSE,
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                ),
+                CURLOPT_POSTFIELDS => json_encode($data)
+            )
+        );
         
-        // $responseData = curl_exec($ch);
-        // if (curl_error($ch)) {
-        //     echo 'not working!:' . curl_error($ch);
-        // }else{
-        //     echo $responseData;
-		// }
+        $responseData = curl_exec($ch);
+        if (curl_error($ch)) {
+            echo 'not working!:' . curl_error($ch);
+        }else{
+            echo $responseData;
+		}
     }
 
     public function code(){
