@@ -1,0 +1,42 @@
+/*Image Brun effect*/
+.page-cover {
+    width: 100%;
+    position: fixed;
+    height: 100%;
+    z-index: 0;
+}
+
+.page-cover .cover-bg {
+    background: url(../images/vegas/bg-default.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    z-index: 99;
+}
+.vegas-overlay{
+	 opacity: .2 !important;
+	background: url(../images/02.png) center center;
+}
+.full-size {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.pos-abs {
+    position: absolute;
+    height: 100vh !important;
+}
+.content_pos{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	margin-left: auto;
+	margin-right: auto;
+}
+.banner-area.banner-1{
+	overflow: hidden;
+}
